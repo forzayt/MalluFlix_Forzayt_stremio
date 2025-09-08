@@ -8,6 +8,7 @@ const manifest = {
     "name": "MalluFlix",
     "description": "Stream the latest Malayalam movies directly in Stremio without buffering",
     "logo": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSBciJKrh7BJiY6U1UKbCedjqBdd9_AQai7-Q&s",
+    "background": "https://avatars.githubusercontent.com/u/127679210?v=4",
 
     // set what type of resources we will return
     "resources": [
