@@ -2,11 +2,11 @@ const { addonBuilder } = require("stremio-addon-sdk");
 const streamsData = require("./streamsData");
 
 const manifest = { 
-    "id": "org.stremio.helloworld",
+    "id": "org.mallu.flix.forza",
     "version": "1.0.0",
 
-    "name": "Hello World Addon",
-    "description": "Sample addon providing a few public domain movies",
+    "name": "MalluFlix",
+    "description": "Stream the latest Malayalam movies directly in Stremio without buffering",
 
     // set what type of resources we will return
     "resources": [
@@ -14,17 +14,14 @@ const manifest = {
         "stream"
     ],
 
-    "types": ["movie", "series"], // your add-on will be preferred for those content types
+    "types": ["movie"], // your add-on will be preferred for those content types
 
     // set catalogs, we'll be making 2 catalogs in this case, 1 for movies and 1 for series
     "catalogs": [
         {
             type: 'movie',
-            id: 'helloworldmovies'
-        },
-        {
-            type: 'series',
-            id: 'helloworldseries'
+            id: 'mallu-flix',
+            name: "MalluFlix Movies"
         }
     ],
 
