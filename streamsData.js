@@ -11,7 +11,43 @@ module.exports = {
     "tt4679210": "https://archive.org/download/702434premam125/702434premam125.mp4",
 
 
-    "tt3417422": "https://ia800908.us.archive.org/12/items/874023Drishyam-0880/874023Drishyam-0880.ia.mp4"
+    "tt6067752": "https://ia801606.us.archive.org/3/items/405178lucifer760/405178lucifer760.mp4",
+
+
+
+    "tt3417422": "https://ia800908.us.archive.org/12/items/874023Drishyam-0880/874023Drishyam-0880.ia.mp4",
+
+
+    "tt12361178": "https://ia600509.us.archive.org/16/items/07097Drishyam2-7092350/07097Drishyam2-7092350.ia.mp4",
+    
+
+
+    "tt5335724": "https://archive.org/download/8927348kingliar6576/8927348kingliar6576.mp4",
+    
+
+    
+
+
+    "tt2157186": "https://archive.org/download/wioyrkasfmbdf86852mallusingh0753047hsdg/wioyrkasfmbdf86852mallusingh0753047hsdg.ia.mp4",
+    
+
+    
+
+
+    "tt4961334": "https://ia803208.us.archive.org/9/items/9683958629582countries08439783/9683958629582countries08439783.mp4",
+    
+
+
+    "tt0389337": "https://ia600900.us.archive.org/18/items/1964891RUNWAY09709/1964891RUNWAY09709.mp4",
+
+
+    
+
+
+    "tt11322920": "https://ia800905.us.archive.org/16/items/405ayyappanumkoshium219995/405ayyappanumkoshium219995.mp4"
+
+
+
 };
 
 
