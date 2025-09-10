@@ -31,13 +31,7 @@ const manifest = {
     "idPrefixes": [ "tt" ],
 
 
-    
-    // 🔐 Verification
-    
-        "stremioAddonsConfig": {
-          "issuer": "https://stremio-addons.net",
-          "signature": "eyJhbGciOiJkaXIiLCJlbmMiOiJBMTI4Q0JDLUhTMjU2In0..oanH1KTLpmuOoRpsv4sNkw.tXi7bU7y7Whn_yTvI68-Sz9uhc16nGbipB10wvqLX7mGlrw0Bc7HTzak1orqQ-j6Gfr2rffM73WRX5YTaAjyVlXtjsEop1TF7OMUB1UiuuD5Ns3Dzs4_iDySLtOWwNKe.wj5hWJCy3y9poyCmeHLo8g"
-        }
+ 
       
 
 };
