@@ -40,7 +40,16 @@ const manifest = {
 const dataset = Object.fromEntries(
     Object.entries(streamsData).map(([imdbId, mp4Url]) => [
         imdbId,
-        { name: imdbId, type: "movie", url: mp4Url }
+        { 
+            name: "Mallu Flix", 
+            type: "movie", 
+            url: mp4Url,
+            title: "Mallu Flix streaming server",
+            quality: "4K",
+            behaviorHints: {
+                bingeGroup: "MalluFlix"
+            }
+        }
     ])
 );
 
@@ -51,7 +60,17 @@ const builder = new addonBuilder(manifest);
 // Streams handler
 builder.defineStreamHandler(function(args) {
     if (dataset[args.id]) {
-        return Promise.resolve({ streams: [dataset[args.id]] });
+        const stream = dataset[args.id];
+        // Ensure quality is properly set for Stremio display
+        const formattedStream = {
+            ...stream,
+            quality: "4K",
+            behaviorHints: {
+                ...stream.behaviorHints,
+                bingeGroup: "MalluFlix"
+            }
+        };
+        return Promise.resolve({ streams: [formattedStream] });
     } else {
         return Promise.resolve({ streams: [] });
     }
