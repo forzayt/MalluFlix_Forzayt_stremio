@@ -44,7 +44,7 @@ const dataset = Object.fromEntries(
             name: "Mallu Flix", 
             type: "movie", 
             url: mp4Url,
-            title: "Mallu Flix streaming server",
+            title: "Mallu Flix Streaming Server",
             quality: "4K",
             behaviorHints: {
                 bingeGroup: "MalluFlix"
