@@ -14,7 +14,8 @@ const manifest = {
     // set what type of resources we will return
     "resources": [
         "catalog",
-        "stream"
+        "stream",
+        "meta"
     ],
 
     "types": ["movie", "tv"], // your add-on will be preferred for those content types
@@ -236,22 +237,86 @@ builder.defineCatalogHandler(function(args, cb) {
     else if (args.type === 'tv') {
         metas = Object.entries(newsDataset)
             .filter(([_, value]) => value.type === args.type)
-            .map(([key, value]) => ({
-                id: key,
-                type: value.type,
-                name: value.name || value.title || "Live News Stream",
-                title: value.title || value.name || "Live News Stream",
-                poster: value.poster || "https://via.placeholder.com/300x450/FF6B6B/FFFFFF?text=News",
-                background: value.background || "https://via.placeholder.com/1920x1080/FF6B6B/FFFFFF?text=MalluFlix+News",
-                description: `Live streaming from ${value.name || 'News Channel'}`,
-                genres: ["News", "Live"],
-                year: new Date().getFullYear()
-            }));
+            .map(([key, value]) => {
+                const videoId = key.replace('news:', '');
+                const thumbnailUrl = value.poster || `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`;
+                
+                return {
+                    id: key,
+                    type: value.type,
+                    name: value.name || value.title || "Live News Stream",
+                    title: value.title || value.name || "Live News Stream",
+                    poster: thumbnailUrl,
+                    background: thumbnailUrl,
+                    logo: thumbnailUrl,
+                    description: `Live streaming from ${value.name || 'News Channel'}`,
+                    genres: ["News", "Live"],
+                    year: new Date().getFullYear()
+                };
+            });
         console.log('News metas count:', metas.length);
         console.log('Sample news meta:', metas[0]);
     }
 
     return Promise.resolve({ metas: metas })
+})
+
+// Meta handler for detailed metadata (crucial for Continue Watching)
+builder.defineMetaHandler(function(args) {
+    console.log('Meta request for:', args.id);
+    
+    // Handle movie metadata
+    if (dataset[args.id]) {
+        const stream = dataset[args.id];
+        const imdbId = args.id.split(":")[0];
+        
+        const meta = {
+            id: args.id,
+            type: stream.type,
+            name: stream.name,
+            title: stream.title,
+            poster: `https://images.metahub.space/poster/medium/${imdbId}/img`,
+            background: `https://images.metahub.space/background/medium/${imdbId}/img`,
+            logo: `https://images.metahub.space/logo/medium/${imdbId}/img`,
+            description: `Streaming from ${stream.name}`,
+            genres: ["Malayalam", "Movies"],
+            year: new Date().getFullYear(),
+            runtime: "120 min",
+            country: "India",
+            language: "Malayalam"
+        };
+        
+        console.log('Returning movie meta:', meta);
+        return Promise.resolve({ meta: meta });
+    }
+    
+    // Handle news metadata
+    if (newsDataset[args.id]) {
+        const stream = newsDataset[args.id];
+        const videoId = args.id.replace('news:', '');
+        const thumbnailUrl = stream.poster || `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`;
+        
+        const meta = {
+            id: args.id,
+            type: stream.type,
+            name: stream.name || stream.title || "Live News Stream",
+            title: stream.title || stream.name || "Live News Stream",
+            poster: thumbnailUrl,
+            background: thumbnailUrl,
+            logo: thumbnailUrl,
+            description: `Live streaming from ${stream.name || 'News Channel'}`,
+            genres: ["News", "Live"],
+            year: new Date().getFullYear(),
+            runtime: "Live",
+            country: "India",
+            language: "Malayalam"
+        };
+        
+        console.log('Returning news meta:', meta);
+        return Promise.resolve({ meta: meta });
+    }
+    
+    return Promise.resolve({ meta: null });
 })
 
 module.exports = builder.getInterface()
