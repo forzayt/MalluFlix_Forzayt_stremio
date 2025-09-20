@@ -4,7 +4,7 @@
 
 This addon provides:
 - **MalluFlix Movies**: Direct MP4 streaming of Malayalam movies
-- **MalluFlix News**: Live YouTube streams from Malayalam news channels
+- **MalluFlix News**: Live YouTube streams from Malayalam news channels (no API key required!)
 
 ## Setup
 
@@ -13,23 +13,7 @@ This addon provides:
 npm install
 ```
 
-### 2. YouTube API Setup
-To enable live news streaming, you need a YouTube API key:
-
-1. Go to [Google Cloud Console](https://console.developers.google.com/)
-2. Create a new project or select existing one
-3. Enable YouTube Data API v3
-4. Create credentials (API Key)
-5. Set the environment variable:
-   ```bash
-   export YOUTUBE_API_KEY=your_api_key_here
-   ```
-   Or on Windows:
-   ```cmd
-   set YOUTUBE_API_KEY=your_api_key_here
-   ```
-
-### 3. Run the Addon
+### 2. Run the Addon
 ```bash
 npm start
 ```

@@ -1,6 +1,6 @@
 const { addonBuilder } = require("stremio-addon-sdk");
 const streamsData = require("./streamsData");
-const { google } = require('googleapis');
+const axios = require('axios');
 
 const manifest = { 
     "id": "org.mallu.flix.forza",
@@ -66,16 +66,60 @@ const dataset = Object.fromEntries(
     ])
 );
 
-// Dynamic news dataset - will be populated from YouTube API
+// Dynamic news dataset - will be populated from YouTube HTML scraping
 let newsDataset = {};
 
-// YouTube API configuration
-const youtube = google.youtube({
-    version: 'v3',
-    auth: process.env.YOUTUBE_API_KEY || 'AIzaSyATgYvq78nB8WO2nOOEwZf0PB9yXLAAGRA'
-});
+// Function to scrape YouTube live streams from HTML search results
+async function scrapeYoutubeLive(query) {
+    try {
+        const url = `https://www.youtube.com/results?search_query=${encodeURIComponent(query)}&sp=EgJAAQ%253D%253D`;
+        const res = await axios.get(url, {
+            headers: {
+                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36'
+            }
+        });
 
-// Function to fetch all live news streams from YouTube
+        // Extract initialData JSON
+        const html = res.data;
+        const jsonMatch = html.match(/var ytInitialData = (.*?);\s*<\/script>/);
+        
+        if (!jsonMatch) {
+            //console.log('Could not find ytInitialData in HTML');
+            return [];
+        }
+
+        const data = JSON.parse(jsonMatch[1]);
+        const videos = [];
+
+        // Traverse JSON for video IDs
+        const contents = data.contents?.twoColumnSearchResultsRenderer?.primaryContents?.sectionListRenderer?.contents || [];
+        
+        contents.forEach(section => {
+            const items = section.itemSectionRenderer?.contents || [];
+            items.forEach(item => {
+                const video = item.videoRenderer;
+                if (video && video.videoId) {
+                    const thumbnail = video.thumbnail?.thumbnails?.slice(-1)[0]?.url || 
+                                   `https://img.youtube.com/vi/${video.videoId}/maxresdefault.jpg`;
+                    
+                    videos.push({
+                        id: video.videoId,
+                        title: video.title?.runs?.[0]?.text || 'Live Stream',
+                        thumbnail: thumbnail,
+                        url: `https://www.youtube.com/watch?v=${video.videoId}`
+                    });
+                }
+            });
+        });
+
+        return videos;
+    } catch (err) {
+        //console.error(`Scrape error for "${query}":`, err.message);
+        return [];
+    }
+}
+
+// Function to fetch all live news streams using HTML scraping
 async function fetchLiveStreams() {
     try {
         const allStreams = [];
@@ -92,58 +136,44 @@ async function fetchLiveStreams() {
         
         for (const query of searchQueries) {
             try {
-                // Search for live streams with this query
-                const response = await youtube.search.list({
-                    part: 'snippet',
-                    q: query,
-                    type: 'video',
-                    eventType: 'live',
-                    maxResults: 10,
-                    order: 'relevance'
-                });
-
-                if (response.data.items) {
-                    for (const item of response.data.items) {
-                        const videoId = item.id.videoId;
-                        const snippet = item.snippet;
-                        
-                        // Skip if we already have this video
-                        if (allStreams.some(stream => stream.id === `news:${videoId}`)) {
-                            continue;
-                        }
-                        
-                        // Get the best available thumbnail
-                        const thumbnail = snippet.thumbnails?.maxres?.url || 
-                                        snippet.thumbnails?.high?.url || 
-                                        snippet.thumbnails?.medium?.url || 
-                                        snippet.thumbnails?.default?.url;
-                        
-                        console.log(`Adding stream: ${snippet.title}`);
-                        console.log(`Thumbnail: ${thumbnail}`);
-                        
-                        allStreams.push({
-                            id: `news:${videoId}`,
-                            name: snippet.title,
-                            type: "tv",
-                            url: `https://www.youtube.com/watch?v=${videoId}`,
-                            title: snippet.title,
-                            quality: "HD",
-                            poster: thumbnail,
-                            background: thumbnail,
-                            behaviorHints: {
-                                bingeGroup: "MalluFlixNews"
-                            }
-                        });
+                //console.log(`Scraping YouTube for: ${query}`);
+                const videos = await scrapeYoutubeLive(query);
+                
+                for (const video of videos) {
+                    // Skip if we already have this video
+                    if (allStreams.some(stream => stream.id === `news:${video.id}`)) {
+                        continue;
                     }
+                    
+                    //console.log(`Adding stream: ${video.title}`);
+                    //console.log(`Thumbnail: ${video.thumbnail}`);
+                    
+                    allStreams.push({
+                        id: `news:${video.id}`,
+                        name: video.title,
+                        type: "tv",
+                        url: video.url,
+                        title: video.title,
+                        quality: "HD",
+                        poster: video.thumbnail,
+                        background: video.thumbnail,
+                        behaviorHints: {
+                            bingeGroup: "MalluFlixNews"
+                        }
+                    });
                 }
+                
+                // Add delay between requests to avoid rate limiting
+                await new Promise(resolve => setTimeout(resolve, 1000));
+                
             } catch (queryError) {
-                console.error(`Error fetching for query "${query}":`, queryError.message);
+                //console.error(`Error scraping for query "${query}":`, queryError.message);
             }
         }
 
         return allStreams;
     } catch (error) {
-        console.error('Error fetching live streams:', error.message);
+        //console.error('Error fetching live streams:', error.message);
         return [];
     }
 }
@@ -158,9 +188,9 @@ async function updateNewsDataset() {
             newsDataset[stream.id] = stream;
         }
         
-        // console.log(`Updated news dataset with ${Object.keys(newsDataset).length} live streams`);
+        // //console.log(`Updated news dataset with ${Object.keys(newsDataset).length} live streams`);
     } catch (error) {
-        console.error('Error updating news dataset:', error);
+        //console.error('Error updating news dataset:', error);
     }
 }
 
@@ -176,12 +206,12 @@ const builder = new addonBuilder(manifest);
 
 // Streams handler
 builder.defineStreamHandler(function(args) {
-    console.log('Stream request for:', args.id);
+    //console.log('Stream request for:', args.id);
     
     // Check for movie streams
     if (dataset[args.id]) {
         const stream = dataset[args.id];
-        console.log('Found movie stream:', stream.name);
+        //console.log('Found movie stream:', stream.name);
         // Ensure quality is properly set for Stremio display
         const formattedStream = {
             ...stream,
@@ -196,7 +226,7 @@ builder.defineStreamHandler(function(args) {
     // Check for news streams
     else if (newsDataset[args.id]) {
         const stream = newsDataset[args.id];
-        console.log('Found news stream:', stream.name);
+        //console.log('Found news stream:', stream.name);
         const formattedStream = {
             ...stream,
             quality: "HD",
@@ -207,7 +237,7 @@ builder.defineStreamHandler(function(args) {
         };
         return Promise.resolve({ streams: [formattedStream] });
     } else {
-        console.log('No stream found for:', args.id);
+        //console.log('No stream found for:', args.id);
         return Promise.resolve({ streams: [] });
     }
 })
@@ -228,7 +258,7 @@ const generateMetaPreview = function(value, key) {
 }
 
 builder.defineCatalogHandler(function(args, cb) {
-    // console.log('Catalog request for type:', args.type);
+    // //console.log('Catalog request for type:', args.type);
     let metas = [];
     
     // Handle movie catalog
@@ -236,7 +266,7 @@ builder.defineCatalogHandler(function(args, cb) {
         metas = Object.entries(dataset)
             .filter(([_, value]) => value.type === args.type)
             .map(([key, value]) => generateMetaPreview(value, key));
-        // console.log('Movie metas count:', metas.length);
+        // //console.log('Movie metas count:', metas.length);
     }
     // Handle news catalog
     else if (args.type === 'tv') {
@@ -259,8 +289,8 @@ builder.defineCatalogHandler(function(args, cb) {
                     year: new Date().getFullYear()
                 };
             });
-        console.log('News metas count:', metas.length);
-        console.log('Sample news meta:', metas[0]);
+        //console.log('News metas count:', metas.length);
+        //console.log('Sample news meta:', metas[0]);
     }
 
     return Promise.resolve({ metas: metas })
@@ -268,9 +298,9 @@ builder.defineCatalogHandler(function(args, cb) {
 
 // Meta handler for detailed metadata (crucial for Continue Watching)
 builder.defineMetaHandler(function(args) {
-    console.log('Meta request for:', args.id);
-    console.log('Available movie IDs:', Object.keys(dataset));
-    console.log('Available news IDs:', Object.keys(newsDataset));
+    //console.log('Meta request for:', args.id);
+    //console.log('Available movie IDs:', Object.keys(dataset));
+    //console.log('Available news IDs:', Object.keys(newsDataset));
     
     // Handle movie metadata
     if (dataset[args.id]) {
@@ -293,7 +323,7 @@ builder.defineMetaHandler(function(args) {
             language: "Malayalam"
         };
         
-        console.log('Returning movie meta:', meta);
+        //console.log('Returning movie meta:', meta);
         return Promise.resolve({ meta: meta });
     }
     
@@ -319,12 +349,12 @@ builder.defineMetaHandler(function(args) {
             language: "Malayalam"
         };
         
-        console.log('Returning news meta:', meta);
+        //console.log('Returning news meta:', meta);
         return Promise.resolve({ meta: meta });
     }
     
     // If not found, return a fallback meta to prevent blank display
-    console.log('Item not found, returning fallback meta for:', args.id);
+    //console.log('Item not found, returning fallback meta for:', args.id);
     const fallbackMeta = {
         id: args.id,
         type: "movie",
@@ -341,7 +371,7 @@ builder.defineMetaHandler(function(args) {
         language: "Unknown"
     };
     
-    console.log('Returning fallback meta:', fallbackMeta);
+    //console.log('Returning fallback meta:', fallbackMeta);
     return Promise.resolve({ meta: fallbackMeta });
 })
 
