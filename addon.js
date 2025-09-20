@@ -72,6 +72,28 @@ const dataset = Object.fromEntries(
 // Dynamic news dataset - will be populated from YouTube HTML scraping
 let newsDataset = {};
 
+// Function to extract direct stream URL from YouTube video
+async function extractYouTubeStream(videoId) {
+    try {
+        // For web browser compatibility, we'll use YouTube's embed URL
+        // which works better in Stremio web browser
+        const embedUrl = `https://www.youtube.com/embed/${videoId}?autoplay=1&controls=1&showinfo=0&rel=0&modestbranding=1&enablejsapi=1`;
+        
+        return {
+            directUrl: embedUrl,
+            fallbackUrl: `https://www.youtube.com/watch?v=${videoId}`,
+            isEmbeddable: true
+        };
+    } catch (err) {
+        //console.error(`Error extracting stream for video ${videoId}:`, err.message);
+        return {
+            directUrl: `https://www.youtube.com/watch?v=${videoId}`,
+            fallbackUrl: `https://www.youtube.com/watch?v=${videoId}`,
+            isEmbeddable: false
+        };
+    }
+}
+
 // Function to scrape YouTube live streams from HTML search results
 async function scrapeYoutubeLive(query) {
     try {
@@ -148,6 +170,9 @@ async function fetchLiveStreams() {
                         continue;
                     }
                     
+                    // Extract YouTube stream for better web compatibility
+                    const streamInfo = await extractYouTubeStream(video.id);
+                    
                     //console.log(`Adding stream: ${video.title}`);
                     //console.log(`Thumbnail: ${video.thumbnail}`);
                     
@@ -155,11 +180,11 @@ async function fetchLiveStreams() {
                         id: `news:${video.id}`,
                         name: video.title,
                         type: "tv",
-                        url: video.url,
+                        url: streamInfo.directUrl,
                         title: video.title,
                         quality: "HD",
                         format: "youtube",
-                        container: "mp4",
+                        container: "youtube",
                         codec: "h264",
                         poster: video.thumbnail,
                         background: video.thumbnail,
@@ -246,7 +271,7 @@ builder.defineStreamHandler(function(args) {
             ...stream,
             quality: "HD",
             format: "youtube",
-            container: "mp4",
+            container: "youtube",
             codec: "h264",
             behaviorHints: {
                 ...stream.behaviorHints,
@@ -254,8 +279,9 @@ builder.defineStreamHandler(function(args) {
             },
             headers: {
                 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36',
-                'Accept': 'video/mp4,video/*,*/*',
-                'Accept-Encoding': 'identity'
+                'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
+                'Accept-Encoding': 'gzip, deflate, br',
+                'Referer': 'https://www.youtube.com/'
             }
         };
         return Promise.resolve({ streams: [formattedStream] });
