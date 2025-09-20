@@ -69,75 +69,13 @@ const dataset = Object.fromEntries(
 // Dynamic news dataset - will be populated from YouTube HTML scraping
 let newsDataset = {};
 
-// Function to get direct streaming URL from YouTube video ID
-async function getYouTubeStreamUrl(videoId) {
-    try {
-        // Try to get stream info using youtube-dl-like approach
-        const streamUrl = `https://www.youtube.com/watch?v=${videoId}`;
-        
-        // For now, return the YouTube URL but with proper stream format info
-        // In a production environment, you'd want to use youtube-dl or similar
-        // to extract actual HLS/DASH URLs
-        return {
-            url: streamUrl,
-            format: 'youtube',
-            quality: 'HD',
-            container: 'mp4',
-            codec: 'h264'
-        };
-    } catch (error) {
-        console.error('Error getting YouTube stream URL:', error);
-        return null;
-    }
-}
-
-// Function to create alternative streaming URLs for better device compatibility
-function createAlternativeStreams(videoId, title, thumbnail) {
-    const streams = [];
-    
-    // YouTube URL (primary)
-    streams.push({
-        url: `https://www.youtube.com/watch?v=${videoId}`,
-        quality: "HD",
-        format: "youtube",
-        container: "mp4",
-        codec: "h264"
-    });
-    
-    // YouTube embed URL (alternative)
-    streams.push({
-        url: `https://www.youtube.com/embed/${videoId}?autoplay=1`,
-        quality: "HD",
-        format: "youtube_embed",
-        container: "mp4",
-        codec: "h264"
-    });
-    
-    // YouTube HLS URL (if available)
-    streams.push({
-        url: `https://manifest.googlevideo.com/api/manifest/hls_variant/expire/0/source/youtube/requiressl/yes/id/${videoId}/itag/0/playlist_type/DVR/ei/0/signature/0/ip/0.0.0.0/ipbits/0/expire/0/sparams/expire,id,itag,source,requiressl,ei,ip,ipbits,playlist_type/signature/0/lsparams/hls_chunk_host,mh,mm,mn,ms,mv,mvi,pl,initcwndbps/lsig/0/playlist.m3u8`,
-        quality: "HD",
-        format: "hls",
-        container: "m3u8",
-        codec: "h264"
-    });
-    
-    return streams;
-}
-
 // Function to scrape YouTube live streams from HTML search results
 async function scrapeYoutubeLive(query) {
     try {
         const url = `https://www.youtube.com/results?search_query=${encodeURIComponent(query)}&sp=EgJAAQ%253D%253D`;
         const res = await axios.get(url, {
             headers: {
-                'User-Agent': 'Mozilla/5.0 (compatible; StremioAddon/1.0; +https://stremio.com)',
-                'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
-                'Accept-Language': 'en-US,en;q=0.5',
-                'Accept-Encoding': 'gzip, deflate',
-                'DNT': '1',
-                'Connection': 'keep-alive',
-                'Upgrade-Insecure-Requests': '1'
+                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36'
             }
         });
 
@@ -210,28 +148,18 @@ async function fetchLiveStreams() {
                     //console.log(`Adding stream: ${video.title}`);
                     //console.log(`Thumbnail: ${video.thumbnail}`);
                     
-                    // Create multiple stream options for better device compatibility
-                    const alternativeStreams = createAlternativeStreams(video.id, video.title, video.thumbnail);
-                    
-                    alternativeStreams.forEach((streamInfo, index) => {
-                        allStreams.push({
-                            id: `news:${video.id}${index > 0 ? `_${index}` : ''}`,
-                            name: video.title,
-                            type: "tv",
-                            url: streamInfo.url,
-                            title: video.title,
-                            quality: streamInfo.quality,
-                            poster: video.thumbnail,
-                            background: video.thumbnail,
-                            format: streamInfo.format,
-                            container: streamInfo.container,
-                            codec: streamInfo.codec,
-                            behaviorHints: {
-                                bingeGroup: "MalluFlixNews",
-                                notWebReady: streamInfo.format === 'hls' ? false : true,
-                                externalPlayer: streamInfo.format === 'youtube' ? true : false
-                            }
-                        });
+                    allStreams.push({
+                        id: `news:${video.id}`,
+                        name: video.title,
+                        type: "tv",
+                        url: video.url,
+                        title: video.title,
+                        quality: "HD",
+                        poster: video.thumbnail,
+                        background: video.thumbnail,
+                        behaviorHints: {
+                            bingeGroup: "MalluFlixNews"
+                        }
                     });
                 }
                 
@@ -295,26 +223,19 @@ builder.defineStreamHandler(function(args) {
         };
         return Promise.resolve({ streams: [formattedStream] });
     }
-    // Check for news streams (including variants)
-    else if (newsDataset[args.id] || args.id.startsWith('news:')) {
+    // Check for news streams
+    else if (newsDataset[args.id]) {
         const stream = newsDataset[args.id];
-        if (stream) {
-            //console.log('Found news stream:', stream.name);
-            
-            // Return the specific stream variant
-            const formattedStream = {
-                ...stream,
-                quality: stream.quality || "HD",
-                behaviorHints: {
-                    ...stream.behaviorHints,
-                    bingeGroup: "MalluFlixNews"
-                }
-            };
-            return Promise.resolve({ streams: [formattedStream] });
-        } else {
-            //console.log('No stream found for:', args.id);
-            return Promise.resolve({ streams: [] });
-        }
+        //console.log('Found news stream:', stream.name);
+        const formattedStream = {
+            ...stream,
+            quality: "HD",
+            behaviorHints: {
+                ...stream.behaviorHints,
+                bingeGroup: "MalluFlixNews"
+            }
+        };
+        return Promise.resolve({ streams: [formattedStream] });
     } else {
         //console.log('No stream found for:', args.id);
         return Promise.resolve({ streams: [] });
