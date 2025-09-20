@@ -59,6 +59,9 @@ const dataset = Object.fromEntries(
             url: mp4Url,
             title: "Mallu Flix Streaming Server",
             quality: "4K",
+            format: "mp4",
+            container: "mp4",
+            codec: "h264",
             behaviorHints: {
                 bingeGroup: "MalluFlix"
             }
@@ -155,6 +158,9 @@ async function fetchLiveStreams() {
                         url: video.url,
                         title: video.title,
                         quality: "HD",
+                        format: "youtube",
+                        container: "mp4",
+                        codec: "h264",
                         poster: video.thumbnail,
                         background: video.thumbnail,
                         behaviorHints: {
@@ -212,13 +218,22 @@ builder.defineStreamHandler(function(args) {
     if (dataset[args.id]) {
         const stream = dataset[args.id];
         //console.log('Found movie stream:', stream.name);
-        // Ensure quality is properly set for Stremio display
+        // Ensure quality is properly set for Stremio display with proper format info
         const formattedStream = {
             ...stream,
             quality: "4K",
+            format: "mp4",
+            container: "mp4",
+            codec: "h264",
             behaviorHints: {
                 ...stream.behaviorHints,
                 bingeGroup: "MalluFlix"
+            },
+            headers: {
+                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36',
+                'Accept': 'video/mp4,video/*,*/*',
+                'Accept-Encoding': 'identity',
+                'Range': 'bytes=0-'
             }
         };
         return Promise.resolve({ streams: [formattedStream] });
@@ -230,9 +245,17 @@ builder.defineStreamHandler(function(args) {
         const formattedStream = {
             ...stream,
             quality: "HD",
+            format: "youtube",
+            container: "mp4",
+            codec: "h264",
             behaviorHints: {
                 ...stream.behaviorHints,
                 bingeGroup: "MalluFlixNews"
+            },
+            headers: {
+                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36',
+                'Accept': 'video/mp4,video/*,*/*',
+                'Accept-Encoding': 'identity'
             }
         };
         return Promise.resolve({ streams: [formattedStream] });
