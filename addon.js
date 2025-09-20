@@ -148,7 +148,7 @@ async function updateNewsDataset() {
             newsDataset[stream.id] = stream;
         }
         
-        console.log(`Updated news dataset with ${Object.keys(newsDataset).length} live streams`);
+        // console.log(`Updated news dataset with ${Object.keys(newsDataset).length} live streams`);
     } catch (error) {
         console.error('Error updating news dataset:', error);
     }
@@ -213,7 +213,7 @@ const generateMetaPreview = function(value, key) {
 }
 
 builder.defineCatalogHandler(function(args, cb) {
-    console.log('Catalog request for type:', args.type);
+    // console.log('Catalog request for type:', args.type);
     let metas = [];
     
     // Handle movie catalog
@@ -221,7 +221,7 @@ builder.defineCatalogHandler(function(args, cb) {
         metas = Object.entries(dataset)
             .filter(([_, value]) => value.type === args.type)
             .map(([key, value]) => generateMetaPreview(value, key));
-        console.log('Movie metas count:', metas.length);
+        // console.log('Movie metas count:', metas.length);
     }
     // Handle news catalog
     else if (args.type === 'tv') {
@@ -234,8 +234,8 @@ builder.defineCatalogHandler(function(args, cb) {
                 poster: value.poster || "https://via.placeholder.com/300x450/FF6B6B/FFFFFF?text=News",
                 background: value.background || "https://via.placeholder.com/1920x1080/FF6B6B/FFFFFF?text=MalluFlix+News"
             }));
-        console.log('News metas count:', metas.length);
-        console.log('News metas:', metas);
+        // console.log('News metas count:', metas.length);
+        // console.log('News metas:', metas);
     }
 
     return Promise.resolve({ metas: metas })
