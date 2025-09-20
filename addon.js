@@ -176,9 +176,12 @@ const builder = new addonBuilder(manifest);
 
 // Streams handler
 builder.defineStreamHandler(function(args) {
+    console.log('Stream request for:', args.id);
+    
     // Check for movie streams
     if (dataset[args.id]) {
         const stream = dataset[args.id];
+        console.log('Found movie stream:', stream.name);
         // Ensure quality is properly set for Stremio display
         const formattedStream = {
             ...stream,
@@ -193,6 +196,7 @@ builder.defineStreamHandler(function(args) {
     // Check for news streams
     else if (newsDataset[args.id]) {
         const stream = newsDataset[args.id];
+        console.log('Found news stream:', stream.name);
         const formattedStream = {
             ...stream,
             quality: "HD",
@@ -203,6 +207,7 @@ builder.defineStreamHandler(function(args) {
         };
         return Promise.resolve({ streams: [formattedStream] });
     } else {
+        console.log('No stream found for:', args.id);
         return Promise.resolve({ streams: [] });
     }
 })
@@ -264,6 +269,8 @@ builder.defineCatalogHandler(function(args, cb) {
 // Meta handler for detailed metadata (crucial for Continue Watching)
 builder.defineMetaHandler(function(args) {
     console.log('Meta request for:', args.id);
+    console.log('Available movie IDs:', Object.keys(dataset));
+    console.log('Available news IDs:', Object.keys(newsDataset));
     
     // Handle movie metadata
     if (dataset[args.id]) {
@@ -316,7 +323,26 @@ builder.defineMetaHandler(function(args) {
         return Promise.resolve({ meta: meta });
     }
     
-    return Promise.resolve({ meta: null });
+    // If not found, return a fallback meta to prevent blank display
+    console.log('Item not found, returning fallback meta for:', args.id);
+    const fallbackMeta = {
+        id: args.id,
+        type: "movie",
+        name: "Unknown Content",
+        title: "Unknown Content",
+        poster: "https://via.placeholder.com/300x450/FF6B6B/FFFFFF?text=Unknown",
+        background: "https://via.placeholder.com/1920x1080/FF6B6B/FFFFFF?text=Unknown",
+        logo: "https://via.placeholder.com/300x450/FF6B6B/FFFFFF?text=Unknown",
+        description: "Content not found",
+        genres: ["Unknown"],
+        year: new Date().getFullYear(),
+        runtime: "Unknown",
+        country: "Unknown",
+        language: "Unknown"
+    };
+    
+    console.log('Returning fallback meta:', fallbackMeta);
+    return Promise.resolve({ meta: fallbackMeta });
 })
 
 module.exports = builder.getInterface()
