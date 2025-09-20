@@ -111,6 +111,15 @@ async function fetchLiveStreams() {
                             continue;
                         }
                         
+                        // Get the best available thumbnail
+                        const thumbnail = snippet.thumbnails?.maxres?.url || 
+                                        snippet.thumbnails?.high?.url || 
+                                        snippet.thumbnails?.medium?.url || 
+                                        snippet.thumbnails?.default?.url;
+                        
+                        console.log(`Adding stream: ${snippet.title}`);
+                        console.log(`Thumbnail: ${thumbnail}`);
+                        
                         allStreams.push({
                             id: `news:${videoId}`,
                             name: snippet.title,
@@ -118,8 +127,8 @@ async function fetchLiveStreams() {
                             url: `https://www.youtube.com/watch?v=${videoId}`,
                             title: snippet.title,
                             quality: "HD",
-                            poster: snippet.thumbnails?.high?.url || snippet.thumbnails?.medium?.url || snippet.thumbnails?.default?.url,
-                            background: snippet.thumbnails?.maxres?.url || snippet.thumbnails?.high?.url || snippet.thumbnails?.medium?.url,
+                            poster: thumbnail,
+                            background: thumbnail,
                             behaviorHints: {
                                 bingeGroup: "MalluFlixNews"
                             }
@@ -230,12 +239,16 @@ builder.defineCatalogHandler(function(args, cb) {
             .map(([key, value]) => ({
                 id: key,
                 type: value.type,
-                name: value.name,
+                name: value.name || value.title || "Live News Stream",
+                title: value.title || value.name || "Live News Stream",
                 poster: value.poster || "https://via.placeholder.com/300x450/FF6B6B/FFFFFF?text=News",
-                background: value.background || "https://via.placeholder.com/1920x1080/FF6B6B/FFFFFF?text=MalluFlix+News"
+                background: value.background || "https://via.placeholder.com/1920x1080/FF6B6B/FFFFFF?text=MalluFlix+News",
+                description: `Live streaming from ${value.name || 'News Channel'}`,
+                genres: ["News", "Live"],
+                year: new Date().getFullYear()
             }));
-        // console.log('News metas count:', metas.length);
-        // console.log('News metas:', metas);
+        console.log('News metas count:', metas.length);
+        console.log('Sample news meta:', metas[0]);
     }
 
     return Promise.resolve({ metas: metas })
