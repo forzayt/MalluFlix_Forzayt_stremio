@@ -1,5 +1,6 @@
 const { addonBuilder } = require("stremio-addon-sdk");
 const streamsData = require("./streamsData");
+const { getNewsStream, getAllNewsStreams } = require("./newsStream");
 const axios = require('axios');
 
 const manifest = { 
@@ -64,159 +65,11 @@ const dataset = Object.fromEntries(
     ])
 );
 
-// Dynamic news dataset - will be populated from YouTube HTML scraping
-let newsDataset = {};
+// News streams are now handled by the newsStream.js module
 
-// Function to extract direct stream URL from YouTube video
-async function extractYouTubeStream(videoId) {
-    try {
-        // For web browser compatibility, we'll use YouTube's embed URL
-        // which works better in Stremio web browser
-        const embedUrl = `https://www.youtube.com/embed/${videoId}?autoplay=1&controls=1&showinfo=0&rel=0&modestbranding=1&enablejsapi=1`;
-        
-        return {
-            directUrl: embedUrl,
-            fallbackUrl: `https://www.youtube.com/watch?v=${videoId}`,
-            isEmbeddable: true
-        };
-    } catch (err) {
-        return {
-            directUrl: `https://www.youtube.com/watch?v=${videoId}`,
-            fallbackUrl: `https://www.youtube.com/watch?v=${videoId}`,
-            isEmbeddable: false
-        };
-    }
-}
 
-// Function to scrape YouTube live streams from HTML search results
-async function scrapeYoutubeLive(query) {
-    try {
-        const url = `https://www.youtube.com/results?search_query=${encodeURIComponent(query)}&sp=EgJAAQ%253D%253D`;
-        const res = await axios.get(url, {
-            headers: {
-                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36'
-            }
-        });
 
-        // Extract initialData JSON
-        const html = res.data;
-        const jsonMatch = html.match(/var ytInitialData = (.*?);\s*<\/script>/);
-        
-        if (!jsonMatch) {
-            return [];
-        }
 
-        const data = JSON.parse(jsonMatch[1]);
-        const videos = [];
-
-        // Traverse JSON for video IDs
-        const contents = data.contents?.twoColumnSearchResultsRenderer?.primaryContents?.sectionListRenderer?.contents || [];
-        
-        contents.forEach(section => {
-            const items = section.itemSectionRenderer?.contents || [];
-            items.forEach(item => {
-                const video = item.videoRenderer;
-                if (video && video.videoId) {
-                    const thumbnail = video.thumbnail?.thumbnails?.slice(-1)[0]?.url || 
-                                   `https://img.youtube.com/vi/${video.videoId}/maxresdefault.jpg`;
-                    
-                    videos.push({
-                        id: video.videoId,
-                        title: video.title?.runs?.[0]?.text || 'Live Stream',
-                        thumbnail: thumbnail,
-                        url: `https://www.youtube.com/watch?v=${video.videoId}`
-                    });
-                }
-            });
-        });
-
-        return videos;
-    } catch (err) {
-        return [];
-    }
-}
-
-// Function to fetch all live news streams using HTML scraping
-async function fetchLiveStreams() {
-    try {
-        const allStreams = [];
-        
-        // Search for all live streams with news-related keywords
-        const searchQueries = [
-            'malayalam news live',
-            'kerala news live',
-            'malayalam breaking news',
-            'kerala breaking news',
-            'malayalam live tv',
-            'kerala live tv'
-        ];
-        
-        for (const query of searchQueries) {
-            try {
-                const videos = await scrapeYoutubeLive(query);
-                
-                for (const video of videos) {
-                    // Skip if we already have this video
-                    if (allStreams.some(stream => stream.id === `news:${video.id}`)) {
-                        continue;
-                    }
-                    
-                    // Extract YouTube stream for better web compatibility
-                    const streamInfo = await extractYouTubeStream(video.id);
-                    
-                    
-                    allStreams.push({
-                        id: `news:${video.id}`,
-                        name: video.title,
-                        type: "tv",
-                        url: streamInfo.directUrl,
-                        title: video.title,
-                        quality: "HD",
-                        format: "youtube",
-                        container: "youtube",
-                        codec: "h264",
-                        poster: video.thumbnail,
-                        background: video.thumbnail,
-                        behaviorHints: {
-                            bingeGroup: "MalluFlixNews"
-                        }
-                    });
-                }
-                
-                // Add delay between requests to avoid rate limiting
-                await new Promise(resolve => setTimeout(resolve, 1000));
-                
-            } catch (queryError) {
-                // Silently continue to next query
-            }
-        }
-
-        return allStreams;
-    } catch (error) {
-        return [];
-    }
-}
-
-// Function to update news dataset
-async function updateNewsDataset() {
-    try {
-        const liveStreams = await fetchLiveStreams();
-        newsDataset = {};
-        
-        for (const stream of liveStreams) {
-            newsDataset[stream.id] = stream;
-        }
-        
-    } catch (error) {
-        // Silently handle error
-    }
-}
-
-// Initialize news dataset
-updateNewsDataset();
-
-// Update news dataset every 5 minutes to catch new live streams
-setInterval(updateNewsDataset, 5 * 60 * 1000);
 
 
 const builder = new addonBuilder(manifest);
@@ -247,27 +100,18 @@ builder.defineStreamHandler(function(args) {
         };
         return Promise.resolve({ streams: [formattedStream] });
     }
-    // Check for news streams
-    else if (newsDataset[args.id]) {
-        const stream = newsDataset[args.id];
-        const formattedStream = {
-            ...stream,
-            quality: "HD",
-            format: "youtube",
-            container: "youtube",
-            codec: "h264",
-            behaviorHints: {
-                ...stream.behaviorHints,
-                bingeGroup: "MalluFlixNews"
-            },
-            headers: {
-                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36',
-                'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
-                'Accept-Encoding': 'gzip, deflate, br',
-                'Referer': 'https://www.youtube.com/'
-            }
-        };
-        return Promise.resolve({ streams: [formattedStream] });
+    // Check for news streams using new newsStream module
+    else if (args.id.startsWith('news:')) {
+        const videoId = args.id.replace('news:', '');
+        const streams = getNewsStream(videoId);
+        
+        if (streams && streams.length > 0) {
+            console.log(`✅ Found ${streams.length} stream formats for news: ${videoId}`);
+            return Promise.resolve({ streams: streams });
+        } else {
+            console.log(`❌ No streams found for news: ${videoId}`);
+            return Promise.resolve({ streams: [] });
+        }
     } else {
         return Promise.resolve({ streams: [] });
     }
@@ -297,17 +141,17 @@ builder.defineCatalogHandler(function(args, cb) {
             .filter(([_, value]) => value.type === args.type)
             .map(([key, value]) => generateMetaPreview(value, key));
     }
-    // Handle news catalog
+    // Handle news catalog using new newsStream module
     else if (args.type === 'tv') {
-        metas = Object.entries(newsDataset)
-            .filter(([_, value]) => value.type === args.type)
+        const allNewsStreams = getAllNewsStreams();
+        metas = Object.entries(allNewsStreams)
             .map(([key, value]) => {
                 const videoId = key.replace('news:', '');
                 const thumbnailUrl = value.poster || `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`;
                 
                 return {
                     id: key,
-                    type: value.type,
+                    type: "tv",
                     name: value.name || value.title || "Live News Stream",
                     title: value.title || value.name || "Live News Stream",
                     poster: thumbnailUrl,
@@ -350,29 +194,33 @@ builder.defineMetaHandler(function(args) {
         return Promise.resolve({ meta: meta });
     }
     
-    // Handle news metadata
-    if (newsDataset[args.id]) {
-        const stream = newsDataset[args.id];
-        const videoId = args.id.replace('news:', '');
-        const thumbnailUrl = stream.poster || `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`;
+    // Handle news metadata using new newsStream module
+    if (args.id.startsWith('news:')) {
+        const allNewsStreams = getAllNewsStreams();
+        const stream = allNewsStreams[args.id];
         
-        const meta = {
-            id: args.id,
-            type: stream.type,
-            name: stream.name || stream.title || "Live News Stream",
-            title: stream.title || stream.name || "Live News Stream",
-            poster: thumbnailUrl,
-            background: thumbnailUrl,
-            logo: thumbnailUrl,
-            description: `Live streaming from ${stream.name || 'News Channel'}`,
-            genres: ["News", "Live"],
-            year: new Date().getFullYear(),
-            runtime: "Live",
-            country: "India",
-            language: "Malayalam"
-        };
-        
-        return Promise.resolve({ meta: meta });
+        if (stream) {
+            const videoId = args.id.replace('news:', '');
+            const thumbnailUrl = stream.poster || `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`;
+            
+            const meta = {
+                id: args.id,
+                type: "tv",
+                name: stream.name || stream.title || "Live News Stream",
+                title: stream.title || stream.name || "Live News Stream",
+                poster: thumbnailUrl,
+                background: thumbnailUrl,
+                logo: thumbnailUrl,
+                description: `Live streaming from ${stream.name || 'News Channel'}`,
+                genres: ["News", "Live"],
+                year: new Date().getFullYear(),
+                runtime: "Live",
+                country: "India",
+                language: "Malayalam"
+            };
+            
+            return Promise.resolve({ meta: meta });
+        }
     }
     
     // If not found, return a fallback meta to prevent blank display

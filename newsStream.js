@@ -1,212 +1,179 @@
-const youtubedl = require("youtube-dl-exec");
-
-// In-memory cache for HLS links
-const hlsCache = new Map();
-
-// Cache configuration
-const CACHE_DURATION = 3 * 60 * 1000; // 3 minutes in milliseconds
-const MAX_CACHE_SIZE = 100; // Maximum number of cached entries
-
-/**
- * Clean up expired cache entries
- */
-function cleanExpiredCache() {
-    const now = Date.now();
-    for (const [videoId, cacheEntry] of hlsCache.entries()) {
-        if (now - cacheEntry.timestamp > CACHE_DURATION) {
-            hlsCache.delete(videoId);
+// Hardcoded news streams data with multiple format options - TESTING VERSION
+const newsStreams = {
+    // Single news stream for testing - replace with your actual data
+    "news:test1": {
+        id: "news:test1",
+        name: "Malayalam News Live",
+        title: "Malayalam News Live",
+        // Multiple format options - Stremio will try them in order until one works
+        formats: [
+            {
+                url: "https://www.youtube.com/watch?v=tXRuaacO-ZU",
+                quality: "HD",
+                format: "youtube",
+                container: "youtube",
+                codec: "h264",
+                headers: {
+                    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+                    'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
+                    'Accept-Encoding': 'gzip, deflate, br',
+                    'Referer': 'https://www.youtube.com/',
+                    'Origin': 'https://www.youtube.com'
+                }
+            },
+            {
+                url: "https://example.com/stream-hls.m3u8",
+                quality: "HD",
+                format: "hls",
+                container: "m3u8",
+                codec: "h264",
+                headers: {
+                    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36',
+                    'Accept': 'application/vnd.apple.mpegurl,application/x-mpegURL,*/*',
+                    'Referer': 'https://www.youtube.com/'
+                }
+            },
+            {
+                url: "https://example.com/stream-mp4.mp4",
+                quality: "HD",
+                format: "mp4",
+                container: "mp4",
+                codec: "h264",
+                headers: {
+                    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36',
+                    'Accept': 'video/mp4,video/*,*/*',
+                    'Range': 'bytes=0-'
+                }
+            }
+        ],
+        poster: "https://img.youtube.com/vi/test1/maxresdefault.jpg", // Replace with your thumbnail
+        background: "https://img.youtube.com/vi/test1/maxresdefault.jpg", // Replace with your background
+        behaviorHints: {
+            bingeGroup: "MalluFlixNews"
         }
     }
     
-    // If cache is still too large, remove oldest entries
-    if (hlsCache.size > MAX_CACHE_SIZE) {
-        const entries = Array.from(hlsCache.entries());
-        entries.sort((a, b) => a[1].timestamp - b[1].timestamp);
-        
-        const toRemove = entries.slice(0, hlsCache.size - MAX_CACHE_SIZE);
-        toRemove.forEach(([videoId]) => hlsCache.delete(videoId));
-    }
-}
+    // Add more streams as needed for production...
+};
 
 /**
- * Generate fresh HLS link using yt-dlp
- * @param {string} videoId - YouTube video ID
- * @returns {Promise<Object|null>} Stremio-compatible stream object or null
+ * Get news stream by video ID with multiple format options
+ * @param {string} videoId - Video ID (e.g., "test1")
+ * @returns {Array|null} Array of Stremio-compatible stream objects or null
  */
-async function generateFreshHLSLink(videoId) {
-    try {
-        const ytUrl = `https://www.youtube.com/watch?v=${videoId}`;
-        
-        console.log(`🔄 Generating fresh HLS link for video: ${videoId}`);
-        
-        const result = await youtubedl(ytUrl, {
-            dumpSingleJson: true,
-            noCheckCertificates: true,
-            noWarnings: true,
-            preferFreeFormats: true,
-            skipDownload: true,
-            format: "best[protocol*=m3u8]/best", // Prefer HLS, fallback to best
-            youtubeSkipDashManifest: true,
-            noPlaylist: true
-        });
-
-        // Find HLS formats
-        const hlsFormats = result.formats?.filter(format => 
-            format.protocol === "m3u8_native" || 
-            (format.url && format.url.includes(".m3u8")) ||
-            format.ext === "m3u8"
-        ) || [];
-
-        if (hlsFormats.length === 0) {
-            console.error(`❌ No HLS formats found for video: ${videoId}`);
-            return null;
-        }
-
-        // Select the best quality HLS format
-        const bestHLS = hlsFormats.reduce((best, current) => {
-            // Prioritize by height, then by bitrate
-            const currentHeight = current.height || 0;
-            const bestHeight = best.height || 0;
-            
-            if (currentHeight > bestHeight) return current;
-            if (currentHeight === bestHeight) {
-                return (current.abr || 0) > (best.abr || 0) ? current : best;
-            }
-            return best;
-        });
-
-        const hlsUrl = bestHLS.url;
-        const quality = bestHLS.height ? `${bestHLS.height}p` : "HD";
-        
-        console.log(`✅ Generated HLS link for ${videoId}: ${quality} quality`);
-
-        // Create Stremio-compatible stream object
-        const streamObject = {
-            url: hlsUrl,
-            quality: quality,
-            format: "hls",
-            container: "m3u8",
-            codec: "h264",
-            behaviorHints: { 
-                bingeGroup: "MalluFlixNews" 
-            },
-            headers: {
-                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
-                'Accept': 'application/vnd.apple.mpegurl,application/x-mpegURL,application/octet-stream,*/*',
-                'Accept-Encoding': 'gzip, deflate, br',
-                'Referer': 'https://www.youtube.com/',
-                'Origin': 'https://www.youtube.com'
-            }
-        };
-
-        return streamObject;
-
-    } catch (error) {
-        console.error(`❌ Error generating HLS link for ${videoId}:`, error.message);
-        return null;
-    }
-}
-
-/**
- * Get news stream with caching
- * @param {string} videoId - YouTube video ID
- * @returns {Promise<Object|null>} Stremio-compatible stream object or null
- */
-async function getNewsStream(videoId) {
+function getNewsStream(videoId) {
     if (!videoId) {
         console.error("❌ No video ID provided");
         return null;
     }
 
-    // Clean expired cache entries periodically
-    if (Math.random() < 0.1) { // 10% chance to clean cache
-        cleanExpiredCache();
-    }
-
-    const now = Date.now();
-    const cacheKey = videoId;
-
-    // Check if we have a valid cached entry
-    if (hlsCache.has(cacheKey)) {
-        const cacheEntry = hlsCache.get(cacheKey);
-        const age = now - cacheEntry.timestamp;
+    const streamKey = `news:${videoId}`;
+    const stream = newsStreams[streamKey];
+    
+    if (stream && stream.formats && stream.formats.length > 0) {
+        console.log(`✅ Found ${stream.formats.length} format options for: ${videoId}`);
         
-        if (age < CACHE_DURATION) {
-            console.log(`📦 Using cached HLS link for ${videoId} (age: ${Math.round(age / 1000)}s)`);
-            return cacheEntry.streamObject;
-        } else {
-            console.log(`⏰ Cached HLS link for ${videoId} expired (age: ${Math.round(age / 1000)}s)`);
-            hlsCache.delete(cacheKey);
-        }
-    }
-
-    // Generate fresh HLS link
-    const streamObject = await generateFreshHLSLink(videoId);
-    
-    if (streamObject) {
-        // Cache the result
-        hlsCache.set(cacheKey, {
-            streamObject: streamObject,
-            timestamp: now
-        });
+        // Create multiple stream objects for each format
+        const streamObjects = stream.formats.map((format, index) => ({
+            id: `${streamKey}_format_${index + 1}`,
+            name: `${stream.name} (${format.format.toUpperCase()})`,
+            title: `${stream.title} (${format.format.toUpperCase()})`,
+            url: format.url,
+            quality: format.quality,
+            format: format.format,
+            container: format.container,
+            codec: format.codec,
+            poster: stream.poster,
+            background: stream.background,
+            behaviorHints: {
+                ...stream.behaviorHints,
+                // Add format priority hint
+                formatPriority: index + 1
+            },
+            headers: format.headers
+        }));
         
-        console.log(`💾 Cached fresh HLS link for ${videoId}`);
-        return streamObject;
-    }
-
-    return null;
-}
-
-/**
- * Clear cache for a specific video ID
- * @param {string} videoId - YouTube video ID
- */
-function clearCacheForVideo(videoId) {
-    if (hlsCache.has(videoId)) {
-        hlsCache.delete(videoId);
-        console.log(`🗑️ Cleared cache for video: ${videoId}`);
+        return streamObjects;
+    } else {
+        console.error(`❌ No hardcoded stream found for: ${videoId}`);
+        return null;
     }
 }
 
 /**
- * Clear all cached entries
+ * Get all available news streams
+ * @returns {Object} All news streams
  */
-function clearAllCache() {
-    hlsCache.clear();
-    console.log("🗑️ Cleared all HLS cache");
+function getAllNewsStreams() {
+    return newsStreams;
 }
 
 /**
- * Get cache statistics
- * @returns {Object} Cache statistics
+ * Add a new news stream
+ * @param {string} videoId - Video ID
+ * @param {Object} streamData - Stream data object with formats array
  */
-function getCacheStats() {
-    const now = Date.now();
-    let validEntries = 0;
-    let expiredEntries = 0;
-    
-    for (const [_, cacheEntry] of hlsCache.entries()) {
-        if (now - cacheEntry.timestamp < CACHE_DURATION) {
-            validEntries++;
-        } else {
-            expiredEntries++;
+function addNewsStream(videoId, streamData) {
+    const streamKey = `news:${videoId}`;
+    newsStreams[streamKey] = {
+        id: streamKey,
+        ...streamData,
+        behaviorHints: {
+            bingeGroup: "MalluFlixNews",
+            ...streamData.behaviorHints
         }
-    }
-    
-    return {
-        totalEntries: hlsCache.size,
-        validEntries,
-        expiredEntries,
-        cacheDuration: CACHE_DURATION,
-        maxCacheSize: MAX_CACHE_SIZE
     };
+    console.log(`✅ Added new stream for: ${videoId} with ${streamData.formats?.length || 0} formats`);
 }
 
-// Export the main function and utility functions
+/**
+ * Remove a news stream
+ * @param {string} videoId - Video ID
+ */
+function removeNewsStream(videoId) {
+    const streamKey = `news:${videoId}`;
+    if (newsStreams[streamKey]) {
+        delete newsStreams[streamKey];
+        console.log(`🗑️ Removed stream for: ${videoId}`);
+    } else {
+        console.log(`❌ Stream not found for: ${videoId}`);
+    }
+}
+
+/**
+ * Add additional format options to an existing stream
+ * @param {string} videoId - Video ID
+ * @param {Array} newFormats - Array of new format objects to add
+ */
+function addFormatsToStream(videoId, newFormats) {
+    const streamKey = `news:${videoId}`;
+    if (newsStreams[streamKey]) {
+        if (!newsStreams[streamKey].formats) {
+            newsStreams[streamKey].formats = [];
+        }
+        newsStreams[streamKey].formats.push(...newFormats);
+        console.log(`✅ Added ${newFormats.length} new formats to: ${videoId}`);
+    } else {
+        console.log(`❌ Stream not found for: ${videoId}`);
+    }
+}
+
+/**
+ * Get a simple stream object with just the first source (for backward compatibility)
+ * @param {string} videoId - Video ID
+ * @returns {Object|null} Single stream object or null
+ */
+function getNewsStreamSimple(videoId) {
+    const streams = getNewsStream(videoId);
+    return streams && streams.length > 0 ? streams[0] : null;
+}
+
+// Export functions
 module.exports = {
     getNewsStream,
-    clearCacheForVideo,
-    clearAllCache,
-    getCacheStats,
-    generateFreshHLSLink
+    getNewsStreamSimple,
+    getAllNewsStreams,
+    addNewsStream,
+    removeNewsStream,
+    addFormatsToStream
 };
