@@ -4,7 +4,7 @@
 
 This addon provides:
 - **MalluFlix Movies**: Direct MP4 streaming of Malayalam movies
-- **MalluFlix News**: Live YouTube streams from Malayalam news channels (no API key required!)
+- **MalluFlix TV**: Live YouTube streams from Malayalam news channels (no API key required!)
 
 ## Setup
 

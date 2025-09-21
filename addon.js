@@ -30,7 +30,7 @@ const manifest = {
         {
             type: 'tv',
             id: 'mallu-flix-news',
-            name: "MalluFlix News",
+            name: "Mallu Flix TV",
             extra: [
                 {
                     name: "search",
