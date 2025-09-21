@@ -85,6 +85,35 @@ const newsStreamData = {
 
 
 
+    
+
+
+
+
+
+    "news:surya  hd": {
+        name: "Surya HD",
+        type: "tv",
+        url: "https://livestream10.sunnxt.com/DolbyVision/SuryaTV_HDR/SuryaTV_HDR_Endpoints/SuryaTV-HDR10-IN-index.m3u8",
+        title: "Surya HD",
+        quality: "HD",
+        format: "hls",
+        container: "m3u8",
+        codec: "h264",
+        poster: "https://sund-images.sunnxt.com/194397/1920x1080_SuryaTVHD_194397_7b54e231-bbb9-48d2-8aae-35a5886deed3.jpg",
+        background: "https://sund-images.sunnxt.com/194397/1920x1080_SuryaTVHD_194397_7b54e231-bbb9-48d2-8aae-35a5886deed3.jpg",
+        behaviorHints: {
+            bingeGroup: "MalluFlixNews"
+        }
+    },
+
+
+
+
+
+
+
+
 
 
     "news:asianet-news": {
