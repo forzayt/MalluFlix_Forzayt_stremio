@@ -33,21 +33,21 @@ const newsStreamData = {
 
 
 
-    "news:asianet hd": {
-        name: "Asianet HD",
-        type: "tv",
-        url: "http://217.20.112.199/asianet/index.m3u8",
-        title: "Asianet HD",
-        quality: "HD",
-        format: "hls",
-        container: "m3u8",
-        codec: "h264",
-        poster: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ6KXoop7zjMdtc976686Xm2uGBT9AB_Wec3Q&s",
-        background: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ6KXoop7zjMdtc976686Xm2uGBT9AB_Wec3Q&s",
-        behaviorHints: {
-            bingeGroup: "MalluFlixNews"
-        }
-    },
+    // "news:asianet hd": {
+    //     name: "Asianet HD",
+    //     type: "tv",
+    //     url: "http://217.20.112.199/asianet/index.m3u8",
+    //     title: "Asianet HD",
+    //     quality: "HD",
+    //     format: "hls",
+    //     container: "m3u8",
+    //     codec: "h264",
+    //     poster: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ6KXoop7zjMdtc976686Xm2uGBT9AB_Wec3Q&s",
+    //     background: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ6KXoop7zjMdtc976686Xm2uGBT9AB_Wec3Q&s",
+    //     behaviorHints: {
+    //         bingeGroup: "MalluFlixNews"
+    //     }
+    // },
 
 
 
