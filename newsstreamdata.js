@@ -33,17 +33,17 @@ const newsStreamData = {
 
 
 
-    "news:asianet hd": {
-        name: "Asianet HD",
+    "news:reporter news": {
+        name: "Reporter News Live",
         type: "tv",
-        url: "http://217.20.112.199/asianet/index.m3u8",
-        title: "Asianet HD",
+        url: "https://manifest.googlevideo.com/api/manifest/hls_variant/expire/1758493162/ei/iiXQaK3eFfGG9fwPnd-CsQ8/ip/117.215.89.220/id/nObUcHKZEGY.1/source/yt_live_broadcast/requiressl/yes/xpc/EgVo2aDSNQ%3D%3D/hfr/1/playlist_duration/30/manifest_duration/30/maudio/1/ss/1/ssa/1/bui/ATw7iSX3Erua17g1-NGYZkr5Cj56w-19LbbEs_Icl1HKt8CXeUOUsjHpJTEmugjS6YzFKYSmG_N0HomG/spc/hcYD5Y36PjJOJIE7byf8ivd4uX2FsEouBgawGOJjrDvlrkVxijVGQ-zayk79rbiT6Y1nXsexkB8/vprv/1/go/1/rqh/5/pacing/0/nvgoi/1/ncsapi/1/keepalive/yes/fexp/51355912%2C51552689%2C51565116%2C51565681%2C51580968/dover/11/itag/0/playlist_type/DVR/sparams/expire%2Cei%2Cip%2Cid%2Csource%2Crequiressl%2Cxpc%2Chfr%2Cplaylist_duration%2Cmanifest_duration%2Cmaudio%2Css%2Cssa%2Cbui%2Cspc%2Cvprv%2Cgo%2Crqh%2Citag%2Cplaylist_type/sig/AJfQdSswRQIgZfPBp8x2KRgnFvJx9wE49W8DkpK81RfWtjilBVoc72oCIQDhxWni6LUoEMNwSrjsDNT-bTJ-R2pWeXudFA6bOUlnfg%3D%3D/file/index.m3u8",
+        title: "Reporter News Live",
         quality: "HD",
         format: "hls",
         container: "m3u8",
         codec: "h264",
-        poster: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ6KXoop7zjMdtc976686Xm2uGBT9AB_Wec3Q&s",
-        background: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ6KXoop7zjMdtc976686Xm2uGBT9AB_Wec3Q&s",
+        poster: "https://yt3.googleusercontent.com/bJDd0TLwG0dXlTmaX9RvX1Ch99KMWU8tqpMIXu6W46dNfIS7gK3pC243M--uLOHgPaNKTaQF=s900-c-k-c0x00ffffff-no-rj",
+        background: "https://yt3.googleusercontent.com/bJDd0TLwG0dXlTmaX9RvX1Ch99KMWU8tqpMIXu6W46dNfIS7gK3pC243M--uLOHgPaNKTaQF=s900-c-k-c0x00ffffff-no-rj",
         behaviorHints: {
             bingeGroup: "MalluFlixNews"
         }
@@ -56,27 +56,50 @@ const newsStreamData = {
 
 
 
+    // "news:asianet hd": {
+    //     name: "Asianet HD",
+    //     type: "tv",
+    //     url: "http://217.20.112.199/asianet/index.m3u8",
+    //     title: "Asianet HD",
+    //     quality: "HD",
+    //     format: "hls",
+    //     container: "m3u8",
+    //     codec: "h264",
+    //     poster: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ6KXoop7zjMdtc976686Xm2uGBT9AB_Wec3Q&s",
+    //     background: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ6KXoop7zjMdtc976686Xm2uGBT9AB_Wec3Q&s",
+    //     behaviorHints: {
+    //         bingeGroup: "MalluFlixNews"
+    //     }
+    // },
 
 
 
 
 
 
-    "news:MazhavilManorama hd": {
-        name: "MazhavilManorama HD",
-        type: "tv",
-        url: "https://cdn-7.pishow.tv/live/1129/master.m3u8",
-        title: "MazhavilManorama HD",
-        quality: "HD",
-        format: "hls",
-        container: "m3u8",
-        codec: "h264",
-        poster: "https://mir-s3-cdn-cf.behance.net/projects/404/18278711.548db254aa26c.jpg",
-        background: "https://mir-s3-cdn-cf.behance.net/projects/404/18278711.548db254aa26c.jpg",
-        behaviorHints: {
-            bingeGroup: "MalluFlixNews"
-        }
-    },
+
+
+
+
+
+
+
+
+    // "news:MazhavilManorama hd": {
+    //     name: "MazhavilManorama HD",
+    //     type: "tv",
+    //     url: "https://cdn-7.pishow.tv/live/1129/master.m3u8",
+    //     title: "MazhavilManorama HD",
+    //     quality: "HD",
+    //     format: "hls",
+    //     container: "m3u8",
+    //     codec: "h264",
+    //     poster: "https://mir-s3-cdn-cf.behance.net/projects/404/18278711.548db254aa26c.jpg",
+    //     background: "https://mir-s3-cdn-cf.behance.net/projects/404/18278711.548db254aa26c.jpg",
+    //     behaviorHints: {
+    //         bingeGroup: "MalluFlixNews"
+    //     }
+    // },
 
 
 
@@ -91,21 +114,21 @@ const newsStreamData = {
 
 
 
-    "news:surya  hd": {
-        name: "Surya HD",
-        type: "tv",
-        url: "https://livestream10.sunnxt.com/DolbyVision/SuryaTV_HDR/SuryaTV_HDR_Endpoints/SuryaTV-HDR10-IN-index.m3u8",
-        title: "Surya HD",
-        quality: "HD",
-        format: "hls",
-        container: "m3u8",
-        codec: "h264",
-        poster: "https://sund-images.sunnxt.com/194397/1920x1080_SuryaTVHD_194397_7b54e231-bbb9-48d2-8aae-35a5886deed3.jpg",
-        background: "https://sund-images.sunnxt.com/194397/1920x1080_SuryaTVHD_194397_7b54e231-bbb9-48d2-8aae-35a5886deed3.jpg",
-        behaviorHints: {
-            bingeGroup: "MalluFlixNews"
-        }
-    },
+    // "news:surya  hd": {
+    //     name: "Surya HD",
+    //     type: "tv",
+    //     url: "https://livestream10.sunnxt.com/DolbyVision/SuryaTV_HDR/SuryaTV_HDR_Endpoints/SuryaTV-HDR10-IN-index.m3u8",
+    //     title: "Surya HD",
+    //     quality: "HD",
+    //     format: "hls",
+    //     container: "m3u8",
+    //     codec: "h264",
+    //     poster: "https://sund-images.sunnxt.com/194397/1920x1080_SuryaTVHD_194397_7b54e231-bbb9-48d2-8aae-35a5886deed3.jpg",
+    //     background: "https://sund-images.sunnxt.com/194397/1920x1080_SuryaTVHD_194397_7b54e231-bbb9-48d2-8aae-35a5886deed3.jpg",
+    //     behaviorHints: {
+    //         bingeGroup: "MalluFlixNews"
+    //     }
+    // },
 
 
 
