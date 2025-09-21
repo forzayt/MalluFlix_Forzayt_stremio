@@ -58,6 +58,35 @@ const newsStreamData = {
 
 
 
+
+
+
+
+    "news:MazhavilManorama hd": {
+        name: "MazhavilManorama HD",
+        type: "tv",
+        url: "https://cdn-7.pishow.tv/live/1129/master.m3u8",
+        title: "MazhavilManorama HD",
+        quality: "HD",
+        format: "hls",
+        container: "m3u8",
+        codec: "h264",
+        poster: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ6KXoop7zjMdtc976686Xm2uGBT9AB_Wec3Q&s",
+        background: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ6KXoop7zjMdtc976686Xm2uGBT9AB_Wec3Q&s",
+        behaviorHints: {
+            bingeGroup: "MalluFlixNews"
+        }
+    },
+
+
+
+
+
+
+
+
+
+
     "news:asianet-news": {
         name: "Asianet News Live",
         type: "tv",
