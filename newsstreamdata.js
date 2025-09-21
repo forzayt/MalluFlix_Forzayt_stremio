@@ -16,6 +16,21 @@ const newsStreamData = {
         behaviorHints: {
             bingeGroup: "MalluFlixNews"
         }
+    },
+    "news:mathrubhumi news": {
+        name: "Mathrubhumi News Live",
+        type: "tv",
+        url: "https://mathrubhumicdn.vidgyor.com/mathrubhumi-origin/liveabr/mathrubhumi-origin/live_240p/playlist.m3u8",
+        title: "Mathrubhumi News Live",
+        quality: "HD",
+        format: "hls",
+        container: "m3u8",
+        codec: "h264",
+        poster: "https://yt3.googleusercontent.com/ytc/AIdro_n3GwS5AiD5wcCQcacdBVIqedZEtVm4H1EsLlxB0li41mA=s900-c-k-c0x00ffffff-no-rj",
+        background: "https://yt3.googleusercontent.com/ytc/AIdro_n3GwS5AiD5wcCQcacdBVIqedZEtVm4H1EsLlxB0li41mA=s900-c-k-c0x00ffffff-no-rj",
+        behaviorHints: {
+            bingeGroup: "MalluFlixNews"
+        }
     }
 };
 
