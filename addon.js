@@ -41,12 +41,7 @@ const manifest = {
     ],
 
     // prefix of item IDs (ie: "tt0032138" for movies, "news" for news)
-    "idPrefixes": [ "tt", "news" ],
-
-
- 
-      
-
+    "idPrefixes": [ "tt", "news" ]
 };
 
 // Build dataset using only IMDb ID and direct MP4 URL from streamsData
@@ -85,7 +80,6 @@ async function extractYouTubeStream(videoId) {
             isEmbeddable: true
         };
     } catch (err) {
-        //console.error(`Error extracting stream for video ${videoId}:`, err.message);
         return {
             directUrl: `https://www.youtube.com/watch?v=${videoId}`,
             fallbackUrl: `https://www.youtube.com/watch?v=${videoId}`,
@@ -109,7 +103,6 @@ async function scrapeYoutubeLive(query) {
         const jsonMatch = html.match(/var ytInitialData = (.*?);\s*<\/script>/);
         
         if (!jsonMatch) {
-            //console.log('Could not find ytInitialData in HTML');
             return [];
         }
 
@@ -139,7 +132,6 @@ async function scrapeYoutubeLive(query) {
 
         return videos;
     } catch (err) {
-        //console.error(`Scrape error for "${query}":`, err.message);
         return [];
     }
 }
@@ -161,7 +153,6 @@ async function fetchLiveStreams() {
         
         for (const query of searchQueries) {
             try {
-                //console.log(`Scraping YouTube for: ${query}`);
                 const videos = await scrapeYoutubeLive(query);
                 
                 for (const video of videos) {
@@ -173,8 +164,6 @@ async function fetchLiveStreams() {
                     // Extract YouTube stream for better web compatibility
                     const streamInfo = await extractYouTubeStream(video.id);
                     
-                    //console.log(`Adding stream: ${video.title}`);
-                    //console.log(`Thumbnail: ${video.thumbnail}`);
                     
                     allStreams.push({
                         id: `news:${video.id}`,
@@ -198,13 +187,12 @@ async function fetchLiveStreams() {
                 await new Promise(resolve => setTimeout(resolve, 1000));
                 
             } catch (queryError) {
-                //console.error(`Error scraping for query "${query}":`, queryError.message);
+                // Silently continue to next query
             }
         }
 
         return allStreams;
     } catch (error) {
-        //console.error('Error fetching live streams:', error.message);
         return [];
     }
 }
@@ -219,9 +207,8 @@ async function updateNewsDataset() {
             newsDataset[stream.id] = stream;
         }
         
-        // //console.log(`Updated news dataset with ${Object.keys(newsDataset).length} live streams`);
     } catch (error) {
-        //console.error('Error updating news dataset:', error);
+        // Silently handle error
     }
 }
 
@@ -231,18 +218,15 @@ updateNewsDataset();
 // Update news dataset every 5 minutes to catch new live streams
 setInterval(updateNewsDataset, 5 * 60 * 1000);
 
-// Note: dataset is now simplified to only direct MP4 URL streams
 
 const builder = new addonBuilder(manifest);
 
 // Streams handler
 builder.defineStreamHandler(function(args) {
-    //console.log('Stream request for:', args.id);
     
     // Check for movie streams
     if (dataset[args.id]) {
         const stream = dataset[args.id];
-        //console.log('Found movie stream:', stream.name);
         // Ensure quality is properly set for Stremio display with proper format info
         const formattedStream = {
             ...stream,
@@ -266,7 +250,6 @@ builder.defineStreamHandler(function(args) {
     // Check for news streams
     else if (newsDataset[args.id]) {
         const stream = newsDataset[args.id];
-        //console.log('Found news stream:', stream.name);
         const formattedStream = {
             ...stream,
             quality: "HD",
@@ -286,7 +269,6 @@ builder.defineStreamHandler(function(args) {
         };
         return Promise.resolve({ streams: [formattedStream] });
     } else {
-        //console.log('No stream found for:', args.id);
         return Promise.resolve({ streams: [] });
     }
 })
@@ -307,7 +289,6 @@ const generateMetaPreview = function(value, key) {
 }
 
 builder.defineCatalogHandler(function(args, cb) {
-    // //console.log('Catalog request for type:', args.type);
     let metas = [];
     
     // Handle movie catalog
@@ -315,7 +296,6 @@ builder.defineCatalogHandler(function(args, cb) {
         metas = Object.entries(dataset)
             .filter(([_, value]) => value.type === args.type)
             .map(([key, value]) => generateMetaPreview(value, key));
-        // //console.log('Movie metas count:', metas.length);
     }
     // Handle news catalog
     else if (args.type === 'tv') {
@@ -338,8 +318,6 @@ builder.defineCatalogHandler(function(args, cb) {
                     year: new Date().getFullYear()
                 };
             });
-        //console.log('News metas count:', metas.length);
-        //console.log('Sample news meta:', metas[0]);
     }
 
     return Promise.resolve({ metas: metas })
@@ -347,9 +325,6 @@ builder.defineCatalogHandler(function(args, cb) {
 
 // Meta handler for detailed metadata (crucial for Continue Watching)
 builder.defineMetaHandler(function(args) {
-    //console.log('Meta request for:', args.id);
-    //console.log('Available movie IDs:', Object.keys(dataset));
-    //console.log('Available news IDs:', Object.keys(newsDataset));
     
     // Handle movie metadata
     if (dataset[args.id]) {
@@ -372,7 +347,6 @@ builder.defineMetaHandler(function(args) {
             language: "Malayalam"
         };
         
-        //console.log('Returning movie meta:', meta);
         return Promise.resolve({ meta: meta });
     }
     
@@ -398,12 +372,10 @@ builder.defineMetaHandler(function(args) {
             language: "Malayalam"
         };
         
-        //console.log('Returning news meta:', meta);
         return Promise.resolve({ meta: meta });
     }
     
     // If not found, return a fallback meta to prevent blank display
-    //console.log('Item not found, returning fallback meta for:', args.id);
     const fallbackMeta = {
         id: args.id,
         type: "movie",
@@ -420,7 +392,6 @@ builder.defineMetaHandler(function(args) {
         language: "Unknown"
     };
     
-    //console.log('Returning fallback meta:', fallbackMeta);
     return Promise.resolve({ meta: fallbackMeta });
 })
 
