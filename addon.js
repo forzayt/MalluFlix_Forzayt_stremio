@@ -74,24 +74,12 @@ let newsDataset = {};
 
 // Function to extract direct stream URL from YouTube video
 async function extractYouTubeStream(videoId) {
-    try {
-        // For web browser compatibility, we'll use YouTube's embed URL
-        // which works better in Stremio web browser
-        const embedUrl = `https://www.youtube.com/embed/${videoId}?autoplay=1&controls=1&showinfo=0&rel=0&modestbranding=1&enablejsapi=1`;
-        
-        return {
-            directUrl: embedUrl,
-            fallbackUrl: `https://www.youtube.com/watch?v=${videoId}`,
-            isEmbeddable: true
-        };
-    } catch (err) {
-        //console.error(`Error extracting stream for video ${videoId}:`, err.message);
-        return {
-            directUrl: `https://www.youtube.com/watch?v=${videoId}`,
-            fallbackUrl: `https://www.youtube.com/watch?v=${videoId}`,
-            isEmbeddable: false
-        };
-    }
+    // Always return public YouTube URL
+    return {
+        directUrl: `https://www.youtube.com/watch?v=${videoId}`,
+        fallbackUrl: `https://www.youtube.com/watch?v=${videoId}`,
+        isEmbeddable: true // assume public videos are embeddable
+    };
 }
 
 // Function to scrape YouTube live streams from HTML search results
