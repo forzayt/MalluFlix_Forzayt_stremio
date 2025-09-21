@@ -2,6 +2,11 @@
 // Contains HLS stream URLs for live news channels
 
 const newsStreamData = {
+
+
+
+
+
     "news:asianet-news": {
         name: "Asianet News Live",
         type: "tv",
@@ -17,6 +22,15 @@ const newsStreamData = {
             bingeGroup: "MalluFlixNews"
         }
     },
+
+
+
+
+
+
+
+
+
     "news:mathrubhumi news": {
         name: "Mathrubhumi News Live",
         type: "tv",
@@ -31,7 +45,37 @@ const newsStreamData = {
         behaviorHints: {
             bingeGroup: "MalluFlixNews"
         }
-    }
+    },
+
+
+
+
+
+
+
+
+
+
+    "news:24 News news": {
+        name: "24 News News Live",
+        type: "tv",
+        url: "https://livestream24news.sunnxt.com/24news/TS-49410_5.m3u8",
+        title: "24 News News Live",
+        quality: "HD",
+        format: "hls",
+        container: "m3u8",
+        codec: "h264",
+        poster: "https://yt3.googleusercontent.com/-cXUtm6DRxOggCLXVRbsKbs8CVLYLR7Q1o4Qol35K644KIVJoMBrXw8clQncbGARwAyaCPVcFA=s900-c-k-c0x00ffffff-no-rj",
+        background: "https://yt3.googleusercontent.com/-cXUtm6DRxOggCLXVRbsKbs8CVLYLR7Q1o4Qol35K644KIVJoMBrXw8clQncbGARwAyaCPVcFA=s900-c-k-c0x00ffffff-no-rj",
+        behaviorHints: {
+            bingeGroup: "MalluFlixNews"
+        }
+    },
+
+
+
+
+
 };
 
 module.exports = newsStreamData;
