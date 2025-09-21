@@ -71,8 +71,8 @@ const newsStreamData = {
         format: "hls",
         container: "m3u8",
         codec: "h264",
-        poster: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ6KXoop7zjMdtc976686Xm2uGBT9AB_Wec3Q&s",
-        background: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ6KXoop7zjMdtc976686Xm2uGBT9AB_Wec3Q&s",
+        poster: "https://mir-s3-cdn-cf.behance.net/projects/404/18278711.548db254aa26c.jpg",
+        background: "https://mir-s3-cdn-cf.behance.net/projects/404/18278711.548db254aa26c.jpg",
         behaviorHints: {
             bingeGroup: "MalluFlixNews"
         }
