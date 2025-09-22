@@ -31,31 +31,6 @@ const newsStreamData = {
 
 
 
-
-
-    // "news:reporter news": {
-    //     name: "Reporter News Live",
-    //     type: "tv",
-    //     url: "https://manifest.googlevideo.com/api/manifest/hls_variant/expire/1758493162/ei/iiXQaK3eFfGG9fwPnd-CsQ8/ip/117.215.89.220/id/nObUcHKZEGY.1/source/yt_live_broadcast/requiressl/yes/xpc/EgVo2aDSNQ%3D%3D/hfr/1/playlist_duration/30/manifest_duration/30/maudio/1/ss/1/ssa/1/bui/ATw7iSX3Erua17g1-NGYZkr5Cj56w-19LbbEs_Icl1HKt8CXeUOUsjHpJTEmugjS6YzFKYSmG_N0HomG/spc/hcYD5Y36PjJOJIE7byf8ivd4uX2FsEouBgawGOJjrDvlrkVxijVGQ-zayk79rbiT6Y1nXsexkB8/vprv/1/go/1/rqh/5/pacing/0/nvgoi/1/ncsapi/1/keepalive/yes/fexp/51355912%2C51552689%2C51565116%2C51565681%2C51580968/dover/11/itag/0/playlist_type/DVR/sparams/expire%2Cei%2Cip%2Cid%2Csource%2Crequiressl%2Cxpc%2Chfr%2Cplaylist_duration%2Cmanifest_duration%2Cmaudio%2Css%2Cssa%2Cbui%2Cspc%2Cvprv%2Cgo%2Crqh%2Citag%2Cplaylist_type/sig/AJfQdSswRQIgZfPBp8x2KRgnFvJx9wE49W8DkpK81RfWtjilBVoc72oCIQDhxWni6LUoEMNwSrjsDNT-bTJ-R2pWeXudFA6bOUlnfg%3D%3D/file/index.m3u8",
-    //     title: "Reporter News Live",
-    //     quality: "HD",
-    //     format: "hls",
-    //     container: "m3u8",
-    //     codec: "h264",
-    //     poster: "https://yt3.googleusercontent.com/bJDd0TLwG0dXlTmaX9RvX1Ch99KMWU8tqpMIXu6W46dNfIS7gK3pC243M--uLOHgPaNKTaQF=s900-c-k-c0x00ffffff-no-rj",
-    //     background: "https://yt3.googleusercontent.com/bJDd0TLwG0dXlTmaX9RvX1Ch99KMWU8tqpMIXu6W46dNfIS7gK3pC243M--uLOHgPaNKTaQF=s900-c-k-c0x00ffffff-no-rj",
-    //     behaviorHints: {
-    //         bingeGroup: "MalluFlixNews"
-    //     }
-    // },
-
-
-
-
-
-
-
-
     // "news:asianet hd": {
     //     name: "Asianet HD",
     //     type: "tv",
@@ -187,6 +162,31 @@ const newsStreamData = {
             bingeGroup: "MalluFlixNews"
         }
     },
+
+
+
+
+
+
+
+    "news:reporter news": {
+        name: "Reporter News Live",
+        type: "tv",
+        url: "https://allinonereborn.fun/airtel.m3u8?id=277199",
+        title: "Reporter News Live",
+        quality: "HD",
+        format: "hls",
+        container: "m3u8",
+        codec: "h264",
+        poster: "https://yt3.googleusercontent.com/bJDd0TLwG0dXlTmaX9RvX1Ch99KMWU8tqpMIXu6W46dNfIS7gK3pC243M--uLOHgPaNKTaQF=s900-c-k-c0x00ffffff-no-rj",
+        background: "https://yt3.googleusercontent.com/bJDd0TLwG0dXlTmaX9RvX1Ch99KMWU8tqpMIXu6W46dNfIS7gK3pC243M--uLOHgPaNKTaQF=s900-c-k-c0x00ffffff-no-rj",
+        behaviorHints: {
+            bingeGroup: "MalluFlixNews"
+        }
+    },
+
+
+
 
 
 
