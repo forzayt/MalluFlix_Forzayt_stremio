@@ -419,8 +419,8 @@ const newsStreamData = {
         format: "hls",
         container: "m3u8",
         codec: "h264",
-        poster: "https://upload.wikimedia.org/wikipedia/en/5/56/Kappa_TV.jpg",
-        background: "https://upload.wikimedia.org/wikipedia/en/5/56/Kappa_TV.jpg",
+        poster: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQQ7f-_75GkzjLiHoFVJaoj9lD2P8MfV-tQig&s",
+        background: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQQ7f-_75GkzjLiHoFVJaoj9lD2P8MfV-tQig&s",
         behaviorHints: {
             bingeGroup: "MalluFlixNews"
         }
@@ -475,8 +475,8 @@ const newsStreamData = {
         format: "hls",
         container: "m3u8",
         codec: "h264",
-        poster: "https://upload.wikimedia.org/wikipedia/en/d/dc/ShalomTVlogo.png",
-        background: "https://upload.wikimedia.org/wikipedia/en/d/dc/ShalomTVlogo.png",
+        poster: "https://yt3.googleusercontent.com/x2QKrhG3eMRRAtV3Wff3aTie_nVGll__KFr0A-z_jz2Kvefr1Aq-XivD9AzN0AAQTTvv7Yv49FA=s900-c-k-c0x00ffffff-no-rj",
+        background: "https://yt3.googleusercontent.com/x2QKrhG3eMRRAtV3Wff3aTie_nVGll__KFr0A-z_jz2Kvefr1Aq-XivD9AzN0AAQTTvv7Yv49FA=s900-c-k-c0x00ffffff-no-rj",
         behaviorHints: {
             bingeGroup: "MalluFlixNews"
         }
