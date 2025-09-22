@@ -10,42 +10,23 @@ const newsStreamData = {
 
 
 
-    // "news:manorama news": {
-    //     name: "Manorama News Live",
-    //     type: "tv",
-    //     url: "https://manifest.googlevideo.com/api/manifest/hls_variant/expire/1758481700/ei/xPjPaKjTDJiAjuMP8IL2sQU/ip/61.1.238.83/id/tgBTspqA5nY.2/source/yt_live_broadcast/requiressl/yes/xpc/EgVo2aDSNQ%3D%3D/tx/51605370/txs/51605365%2C51605366%2C51605367%2C51605368%2C51605369%2C51605370%2C51605371/hfr/1/playlist_duration/30/manifest_duration/30/maudio/1/bui/ATw7iSWGfZOElyUMGCbBtHPqKL55vonmdbZ8Bv1gx0N9WCbtKaFrl7UBTHWwzffFDEFhrJV-OniVKQSE/spc/hcYD5Wv3Nw9YI9BQMZBoYl9QHpUXAM0aBn1Y22fHbhLKvo5IZNoIuJg1uaKqgR_xSyUbjAQLaAw/vprv/1/go/1/rqh/5/pacing/0/nvgoi/1/ncsapi/1/keepalive/yes/fexp/51355912%2C51552689%2C51565115%2C51565682%2C51580968%2C51593649/dover/11/itag/0/playlist_type/DVR/sparams/expire%2Cei%2Cip%2Cid%2Csource%2Crequiressl%2Cxpc%2Ctx%2Ctxs%2Chfr%2Cplaylist_duration%2Cmanifest_duration%2Cmaudio%2Cbui%2Cspc%2Cvprv%2Cgo%2Crqh%2Citag%2Cplaylist_type/sig/AJfQdSswRQIgEVZlLhfisLjRdmbnw4O2wW0QImgv6cnapSmId4ZNOvECIQDwtpn_XIguOETxRQvPckj0Ufu1W_2k-H-0uPdIe41AWA%3D%3D/file/index.m3u8",
-    //     title: "Manorama News Live",
-    //     quality: "HD",
-    //     format: "hls",
-    //     container: "m3u8",
-    //     codec: "h264",
-    //     poster: "https://play-lh.googleusercontent.com/cZagYKaPbxDYAYA8TrqXeCYwilbYZq9AB6szzDtDe8neF0KwkWir3hIG4TcTP--r23-C",
-    //     background: "https://play-lh.googleusercontent.com/cZagYKaPbxDYAYA8TrqXeCYwilbYZq9AB6szzDtDe8neF0KwkWir3hIG4TcTP--r23-C",
-    //     behaviorHints: {
-    //         bingeGroup: "MalluFlixNews"
-    //     }
-    // },
 
 
-
-
-
-
-    // "news:asianet hd": {
-    //     name: "Asianet HD",
-    //     type: "tv",
-    //     url: "http://217.20.112.199/asianet/index.m3u8",
-    //     title: "Asianet HD",
-    //     quality: "HD",
-    //     format: "hls",
-    //     container: "m3u8",
-    //     codec: "h264",
-    //     poster: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ6KXoop7zjMdtc976686Xm2uGBT9AB_Wec3Q&s",
-    //     background: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ6KXoop7zjMdtc976686Xm2uGBT9AB_Wec3Q&s",
-    //     behaviorHints: {
-    //         bingeGroup: "MalluFlixNews"
-    //     }
-    // },
+    "news:asianet hd": {
+        name: "Asianet HD",
+        type: "tv",
+        url: "https://allinonereborn.fun/airtel.m3u8?id=277179",
+        title: "Asianet HD",
+        quality: "HD",
+        format: "hls",
+        container: "m3u8",
+        codec: "h264",
+        poster: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ6KXoop7zjMdtc976686Xm2uGBT9AB_Wec3Q&s",
+        background: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ6KXoop7zjMdtc976686Xm2uGBT9AB_Wec3Q&s",
+        behaviorHints: {
+            bingeGroup: "MalluFlixNews"
+        }
+    },
 
 
 
@@ -60,21 +41,81 @@ const newsStreamData = {
 
 
 
-    // "news:MazhavilManorama hd": {
-    //     name: "MazhavilManorama HD",
-    //     type: "tv",
-    //     url: "https://cdn-7.pishow.tv/live/1129/master.m3u8",
-    //     title: "MazhavilManorama HD",
-    //     quality: "HD",
-    //     format: "hls",
-    //     container: "m3u8",
-    //     codec: "h264",
-    //     poster: "https://mir-s3-cdn-cf.behance.net/projects/404/18278711.548db254aa26c.jpg",
-    //     background: "https://mir-s3-cdn-cf.behance.net/projects/404/18278711.548db254aa26c.jpg",
-    //     behaviorHints: {
-    //         bingeGroup: "MalluFlixNews"
-    //     }
-    // },
+    "news:asianetmovies hd": {
+        name: "Asianet Movies HD",
+        type: "tv",
+        url: "https://allinonereborn.fun/airtel.m3u8?id=277186",
+        title: "Asianet Movies HD",
+        quality: "HD",
+        format: "hls",
+        container: "m3u8",
+        codec: "h264",
+        poster: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSE5kDkO6gVojTBf3AWYDoJEnpr-TR9ZJ2bmA&s",
+        background: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSE5kDkO6gVojTBf3AWYDoJEnpr-TR9ZJ2bmA&s",
+        behaviorHints: {
+            bingeGroup: "MalluFlixNews"
+        }
+    },
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    "news:asianetplus hd": {
+        name: "Asianet Plus HD",
+        type: "tv",
+        url: "https://allinonereborn.fun/airtel.m3u8?id=277187",
+        title: "Asianet Plus HD",
+        quality: "HD",
+        format: "hls",
+        container: "m3u8",
+        codec: "h264",
+        poster: "https://yt3.googleusercontent.com/ytc/AIdro_mUXYCHoF4EYWBMmuJvoja__H1j0LsB0TuEPyipGy8cDWc=s900-c-k-c0x00ffffff-no-rj",
+        background: "https://yt3.googleusercontent.com/ytc/AIdro_mUXYCHoF4EYWBMmuJvoja__H1j0LsB0TuEPyipGy8cDWc=s900-c-k-c0x00ffffff-no-rj",
+        behaviorHints: {
+            bingeGroup: "MalluFlixNews"
+        }
+    },
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    "news:MazhavilManorama hd": {
+        name: "MazhavilManorama HD",
+        type: "tv",
+        url: "https://cdn-7.pishow.tv/live/1129/master.m3u8",
+        title: "MazhavilManorama HD",
+        quality: "HD",
+        format: "hls",
+        container: "m3u8",
+        codec: "h264",
+        poster: "https://mir-s3-cdn-cf.behance.net/projects/404/18278711.548db254aa26c.jpg",
+        background: "https://mir-s3-cdn-cf.behance.net/projects/404/18278711.548db254aa26c.jpg",
+        behaviorHints: {
+            bingeGroup: "MalluFlixNews"
+        }
+    },
 
 
 
@@ -89,21 +130,174 @@ const newsStreamData = {
 
 
 
-    // "news:surya  hd": {
-    //     name: "Surya HD",
-    //     type: "tv",
-    //     url: "https://livestream10.sunnxt.com/DolbyVision/SuryaTV_HDR/SuryaTV_HDR_Endpoints/SuryaTV-HDR10-IN-index.m3u8",
-    //     title: "Surya HD",
-    //     quality: "HD",
-    //     format: "hls",
-    //     container: "m3u8",
-    //     codec: "h264",
-    //     poster: "https://sund-images.sunnxt.com/194397/1920x1080_SuryaTVHD_194397_7b54e231-bbb9-48d2-8aae-35a5886deed3.jpg",
-    //     background: "https://sund-images.sunnxt.com/194397/1920x1080_SuryaTVHD_194397_7b54e231-bbb9-48d2-8aae-35a5886deed3.jpg",
-    //     behaviorHints: {
-    //         bingeGroup: "MalluFlixNews"
-    //     }
-    // },
+    "news:surya  hd": {
+        name: "Surya HD",
+        type: "tv",
+        url: "https://livestream10.sunnxt.com/DolbyVision/SuryaTV_HDR/SuryaTV_HDR_Endpoints/SuryaTV-HDR10-IN-index.m3u8",
+        title: "Surya HD",
+        quality: "HD",
+        format: "hls",
+        container: "m3u8",
+        codec: "h264",
+        poster: "https://sund-images.sunnxt.com/194397/1920x1080_SuryaTVHD_194397_7b54e231-bbb9-48d2-8aae-35a5886deed3.jpg",
+        background: "https://sund-images.sunnxt.com/194397/1920x1080_SuryaTVHD_194397_7b54e231-bbb9-48d2-8aae-35a5886deed3.jpg",
+        behaviorHints: {
+            bingeGroup: "MalluFlixNews"
+        }
+    },
+
+
+
+
+
+
+
+
+
+
+
+
+
+    "news:surya movies hd": {
+        name: "Surya Movies HD",
+        type: "tv",
+        url: "https://allinonereborn.fun/airtel.m3u8?id=277188",
+        title: "Surya movies HD",
+        quality: "HD",
+        format: "hls",
+        container: "m3u8",
+        codec: "h264",
+        poster: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQozmtrylLPKzeLeb8Pj0iprpVzq3RE0SJ7qw&s",
+        background: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQozmtrylLPKzeLeb8Pj0iprpVzq3RE0SJ7qw&s",
+        behaviorHints: {
+            bingeGroup: "MalluFlixNews"
+        }
+    },
+
+
+
+
+
+
+
+
+
+
+    
+
+
+
+
+
+    "news:surya comedy ": {
+        name: "Surya comedy",
+        type: "tv",
+        url: "https://allinonereborn.fun/airtel.m3u8?id=277176",
+        title: "Surya comedy",
+        quality: "HD",
+        format: "hls",
+        container: "m3u8",
+        codec: "h264",
+        poster: "https://yt3.googleusercontent.com/ytc/AIdro_mrlBJXw4pQTTluMeIpbdaXCEcjlNh1ik0npfSIoOXXh9A=s900-c-k-c0x00ffffff-no-rj",
+        background: "https://yt3.googleusercontent.com/ytc/AIdro_mrlBJXw4pQTTluMeIpbdaXCEcjlNh1ik0npfSIoOXXh9A=s900-c-k-c0x00ffffff-no-rj",
+        behaviorHints: {
+            bingeGroup: "MalluFlixNews"
+        }
+    },
+
+
+
+
+
+
+
+    
+
+
+
+
+    
+
+
+
+
+
+    "news:surya music ": {
+        name: "Surya Music",
+        type: "tv",
+        url: "https://allinonereborn.fun/airtel.m3u8?id=277193",
+        title: "Surya Music",
+        quality: "HD",
+        format: "hls",
+        container: "m3u8",
+        codec: "h264",
+        poster: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQepWMjshZPdtRd-f5uzAPtsGLDEwHqx3vhTQ&s",
+        background: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQepWMjshZPdtRd-f5uzAPtsGLDEwHqx3vhTQ&s",
+        behaviorHints: {
+            bingeGroup: "MalluFlixNews"
+        }
+    },
+
+
+
+
+
+
+
+    
+
+
+
+
+
+    "news:flowers ": {
+        name: "Flowers",
+        type: "tv",
+        url: "https://allinonereborn.fun/airtel.m3u8?id=277180",
+        title: "Flowers",
+        quality: "HD",
+        format: "hls",
+        container: "m3u8",
+        codec: "h264",
+        poster: "https://play-lh.googleusercontent.com/rcpnu_rUZhWHvged9zd2ZEoEoLQFb6uAOYqxKl4qTNGuxeGPEGwMqvaRISYlMJDBZhA",
+        background: "https://play-lh.googleusercontent.com/rcpnu_rUZhWHvged9zd2ZEoEoLQFb6uAOYqxKl4qTNGuxeGPEGwMqvaRISYlMJDBZhA",
+        behaviorHints: {
+            bingeGroup: "MalluFlixNews"
+        }
+    },
+
+
+
+
+
+
+
+
+
+    
+
+
+
+
+
+    "news:kairali ": {
+        name: "Kairali",
+        type: "tv",
+        url: "https://allinonereborn.fun/airtel.m3u8?id=277181",
+        title: "Kairali",
+        quality: "HD",
+        format: "hls",
+        container: "m3u8",
+        codec: "h264",
+        poster: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTHSGGz84Nh0a3jHVyXpLG3p_8-sZUPy-4j-g&s",
+        background: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTHSGGz84Nh0a3jHVyXpLG3p_8-sZUPy-4j-g&s",
+        behaviorHints: {
+            bingeGroup: "MalluFlixNews"
+        }
+    },
+
+
+
 
 
 
@@ -122,27 +316,177 @@ const newsStreamData = {
 
 
 
-    // "news:Kochu Tv  hd": {
-    //     name: "Kochu Tv HD",
-    //     type: "tv",
-    //     url: "https://allinonereborn.fun/airtel.m3u8?id=277182",
-    //     title: "Kochu Tv HD",
-    //     quality: "HD",
-    //     format: "hls",
-    //     container: "m3u8",
-    //     codec: "h264",
-    //     poster: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTMMCmwpL7Ey8njGQN1LBW9TuqmwYlSfA_M3w&s",
-    //     background: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTMMCmwpL7Ey8njGQN1LBW9TuqmwYlSfA_M3w&s",
-    //     behaviorHints: {
-    //         bingeGroup: "MalluFlixNews"
-    //     }
-    // },
+    "news:we ": {
+        name: "WE ",
+        type: "tv",
+        url: "https://allinonereborn.fun/airtel.m3u8?id=277190",
+        title: "WE",
+        quality: "HD",
+        format: "hls",
+        container: "m3u8",
+        codec: "h264",
+        poster: "https://yt3.googleusercontent.com/r2F6NA3i4eUTGN8yY3dOUIEdUnQdDu11zDGiO1mDWyXk4H9uCBmpElaIdIb2a-BvJeOJE13r=s900-c-k-c0x00ffffff-no-rj",
+        background: "https://yt3.googleusercontent.com/r2F6NA3i4eUTGN8yY3dOUIEdUnQdDu11zDGiO1mDWyXk4H9uCBmpElaIdIb2a-BvJeOJE13r=s900-c-k-c0x00ffffff-no-rj",
+        behaviorHints: {
+            bingeGroup: "MalluFlixNews"
+        }
+    },
 
 
 
 
 
 
+
+
+
+
+
+
+
+    
+
+
+
+
+
+    "news:amritha tv ": {
+        name: "Amritha tv",
+        type: "tv",
+        url: "https://allinonereborn.fun/airtel.m3u8?id=277178",
+        title: "Amritha tv",
+        quality: "HD",
+        format: "hls",
+        container: "m3u8",
+        codec: "h264",
+        poster: "https://yt3.googleusercontent.com/ytc/AIdro_lc41SLmKKTgccE82ZXf7Gd-4_vJGEZHJ2y7qA5iIcq3Rs=s900-c-k-c0x00ffffff-no-rj",
+        background: "https://yt3.googleusercontent.com/ytc/AIdro_lc41SLmKKTgccE82ZXf7Gd-4_vJGEZHJ2y7qA5iIcq3Rs=s900-c-k-c0x00ffffff-no-rj",
+        behaviorHints: {
+            bingeGroup: "MalluFlixNews"
+        }
+    },
+
+
+
+
+
+
+
+
+
+
+
+
+    
+
+
+
+
+
+    "news:Kochu Tv  hd": {
+        name: "Kochu Tv HD",
+        type: "tv",
+        url: "https://allinonereborn.fun/airtel.m3u8?id=277182",
+        title: "Kochu Tv HD",
+        quality: "HD",
+        format: "hls",
+        container: "m3u8",
+        codec: "h264",
+        poster: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTMMCmwpL7Ey8njGQN1LBW9TuqmwYlSfA_M3w&s",
+        background: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTMMCmwpL7Ey8njGQN1LBW9TuqmwYlSfA_M3w&s",
+        behaviorHints: {
+            bingeGroup: "MalluFlixNews"
+        }
+    },
+
+
+
+
+
+    
+    
+
+
+
+
+
+    "news:kappatv": {
+        name: "Kappa Tv HD",
+        type: "tv",
+        url: "https://allinonereborn.fun/airtel.m3u8?id=277200",
+        title: "Kappa Tv HD",
+        quality: "HD",
+        format: "hls",
+        container: "m3u8",
+        codec: "h264",
+        poster: "https://upload.wikimedia.org/wikipedia/en/5/56/Kappa_TV.jpg",
+        background: "https://upload.wikimedia.org/wikipedia/en/5/56/Kappa_TV.jpg",
+        behaviorHints: {
+            bingeGroup: "MalluFlixNews"
+        }
+    },
+
+
+
+
+
+    
+
+
+
+
+
+    "news:zkeralam": {
+        name: "Z Keralam",
+        type: "tv",
+        url: "https://allinonereborn.fun/airtel.m3u8?id=277195",
+        title: "Z Keralam",
+        quality: "HD",
+        format: "hls",
+        container: "m3u8",
+        codec: "h264",
+        poster: "https://admin.indiantelevision.com/sites/default/files/styles/smartcrop_800x800/public/images/tv-images/2020/04/17/Zee%20Keralam.jpg?itok=oGlJnKuT",
+        background: "https://admin.indiantelevision.com/sites/default/files/styles/smartcrop_800x800/public/images/tv-images/2020/04/17/Zee%20Keralam.jpg?itok=oGlJnKuT",
+        behaviorHints: {
+            bingeGroup: "MalluFlixNews"
+        }
+    },
+
+
+
+
+
+
+
+
+
+    
+
+
+
+
+
+    "news:shalom": {
+        name: "Shalom TV",
+        type: "tv",
+        url: "https://allinonereborn.fun/airtel.m3u8?id=277206",
+        title: "Shalom TV",
+        quality: "HD",
+        format: "hls",
+        container: "m3u8",
+        codec: "h264",
+        poster: "https://upload.wikimedia.org/wikipedia/en/d/dc/ShalomTVlogo.png",
+        background: "https://upload.wikimedia.org/wikipedia/en/d/dc/ShalomTVlogo.png",
+        behaviorHints: {
+            bingeGroup: "MalluFlixNews"
+        }
+    },
+
+
+
+
+
+// News Channels Starts Here
 
 
 
@@ -229,6 +573,84 @@ const newsStreamData = {
         codec: "h264",
         poster: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSMa_IJEmJFUqAjmGJhAFNjKVP-y55qcGKbPg&s",
         background: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSMa_IJEmJFUqAjmGJhAFNjKVP-y55qcGKbPg&s",
+        behaviorHints: {
+            bingeGroup: "MalluFlixNews"
+        }
+    },
+
+
+
+
+
+
+
+
+    "news:kairali news": {
+        name: "Kairali News Live",
+        type: "tv",
+        url: "https://allinonereborn.fun/airtel.m3u8?id=277204",
+        title: "Kairali News Live",
+        quality: "HD",
+        format: "hls",
+        container: "m3u8",
+        codec: "h264",
+        poster: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQKPV-FRQy-D2UfU_a6Cmct4qMsaIiJCZ7k6g&s",
+        background: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQKPV-FRQy-D2UfU_a6Cmct4qMsaIiJCZ7k6g&s",
+        behaviorHints: {
+            bingeGroup: "MalluFlixNews"
+        }
+    },
+
+
+
+
+
+
+
+
+
+    "news:mediaone news": {
+        name: "Mediaone News Live",
+        type: "tv",
+        url: "https://allinonereborn.fun/airtel.m3u8?id=277177",
+        title: "Mediaone News Live",
+        quality: "HD",
+        format: "hls",
+        container: "m3u8",
+        codec: "h264",
+        poster: "https://media.assettype.com/newslaundry%2F2022-11%2F34b80692-6b2a-4695-8010-3e47063b309f%2Fmedia_one.jpg?auto=format%2Ccompress&w=376&dpr=2.6",
+        background: "https://media.assettype.com/newslaundry%2F2022-11%2F34b80692-6b2a-4695-8010-3e47063b309f%2Fmedia_one.jpg?auto=format%2Ccompress&w=376&dpr=2.6",
+        behaviorHints: {
+            bingeGroup: "MalluFlixNews"
+        }
+    },
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    "news:news18kerala": {
+        name: "News18 Kerala Live",
+        type: "tv",
+        url: "https://allinonereborn.fun/airtel.m3u8?id=277184",
+        title: "News18 Kerala Live",
+        quality: "HD",
+        format: "hls",
+        container: "m3u8",
+        codec: "h264",
+        poster: "https://yt3.googleusercontent.com/ytc/AIdro_noEGYn5NGuAElTdnJcp3vAZJYN5bM9ZDjFa7OfVxq2xw=s900-c-k-c0x00ffffff-no-rj",
+        background: "https://yt3.googleusercontent.com/ytc/AIdro_noEGYn5NGuAElTdnJcp3vAZJYN5bM9ZDjFa7OfVxq2xw=s900-c-k-c0x00ffffff-no-rj",
         behaviorHints: {
             bingeGroup: "MalluFlixNews"
         }
