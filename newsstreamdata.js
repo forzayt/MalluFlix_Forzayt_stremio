@@ -218,6 +218,28 @@ const newsStreamData = {
 
 
 
+    "news:manorama news": {
+        name: "Manorama News Live",
+        type: "tv",
+        url: "https://allinonereborn.fun/airtel.m3u8?id=277192",
+        title: "Manorama News Live",
+        quality: "HD",
+        format: "hls",
+        container: "m3u8",
+        codec: "h264",
+        poster: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSMa_IJEmJFUqAjmGJhAFNjKVP-y55qcGKbPg&s",
+        background: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSMa_IJEmJFUqAjmGJhAFNjKVP-y55qcGKbPg&s",
+        behaviorHints: {
+            bingeGroup: "MalluFlixNews"
+        }
+    },
+
+
+
+
+
+
+
 
 
 
