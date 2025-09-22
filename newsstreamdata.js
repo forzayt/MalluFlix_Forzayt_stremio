@@ -139,6 +139,39 @@ const newsStreamData = {
 
 
 
+
+
+    
+
+
+
+
+
+    // "news:Kochu Tv  hd": {
+    //     name: "Kochu Tv HD",
+    //     type: "tv",
+    //     url: "https://allinonereborn.fun/airtel.m3u8?id=277182",
+    //     title: "Kochu Tv HD",
+    //     quality: "HD",
+    //     format: "hls",
+    //     container: "m3u8",
+    //     codec: "h264",
+    //     poster: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTMMCmwpL7Ey8njGQN1LBW9TuqmwYlSfA_M3w&s",
+    //     background: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTMMCmwpL7Ey8njGQN1LBW9TuqmwYlSfA_M3w&s",
+    //     behaviorHints: {
+    //         bingeGroup: "MalluFlixNews"
+    //     }
+    // },
+
+
+
+
+
+
+
+
+
+
     "news:asianet-news": {
         name: "Asianet News Live",
         type: "tv",
