@@ -41,21 +41,21 @@ const newsStreamData = {
 
 
 
-    "news:asianetmovies hd": {
-        name: "Asianet Movies HD",
-        type: "tv",
-        url: "https://allinonereborn.fun/airtel.m3u8?id=277186",
-        title: "Asianet Movies HD",
-        quality: "HD",
-        format: "hls",
-        container: "m3u8",
-        codec: "h264",
-        poster: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSE5kDkO6gVojTBf3AWYDoJEnpr-TR9ZJ2bmA&s",
-        background: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSE5kDkO6gVojTBf3AWYDoJEnpr-TR9ZJ2bmA&s",
-        behaviorHints: {
-            bingeGroup: "MalluFlixNews"
-        }
-    },
+    // "news:asianetmovies hd": {
+    //     name: "Asianet Movies HD",
+    //     type: "tv",
+    //     url: "https://allinonereborn.fun/airtel.m3u8?id=277186",
+    //     title: "Asianet Movies HD",
+    //     quality: "HD",
+    //     format: "hls",
+    //     container: "m3u8",
+    //     codec: "h264",
+    //     poster: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSE5kDkO6gVojTBf3AWYDoJEnpr-TR9ZJ2bmA&s",
+    //     background: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSE5kDkO6gVojTBf3AWYDoJEnpr-TR9ZJ2bmA&s",
+    //     behaviorHints: {
+    //         bingeGroup: "MalluFlixNews"
+    //     }
+    // },
 
 
 
