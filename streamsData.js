@@ -15,6 +15,10 @@ module.exports = {
     "tt34757142": "https://teamomw5.com/hls/xwwm2js3peg4cof2bs2ua3u5xbua3pvg7672lazno,on3tvdqrznjdracf4mq,he3tvdqrznfrh5zv53a,6zlrvdqrznfzxassqzq,.urlset/master.m3u8",
 
 
+
+    "tt27441481": "https://teamomw5.com/hls/xwwm2d22peg4cof2bs2uanuy643s6dnpxqtnjnlgx,rdfuqyna6yweq5uvpaq,2zfuqyna6yrdihcxxcq,befwqyna6ystniu5iya,.urlset/master.m3u8",
+
+
 };
 
 
