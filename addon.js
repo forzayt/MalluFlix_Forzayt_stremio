@@ -1,6 +1,5 @@
 const { addonBuilder } = require("stremio-addon-sdk");
 const streamsData = require("./streamsData");
-const newsStreamData = require("./newsstreamdata");
 
 const manifest = { 
     "id": "org.mallu.flix.forza",
@@ -18,30 +17,19 @@ const manifest = {
         "meta"
     ],
 
-    "types": ["movie", "tv"], // your add-on will be preferred for those content types
+    "types": ["movie"], // only movies are supported
 
-    // set catalogs, we'll be making 2 catalogs in this case, 1 for movies and 1 for news
+    // set catalogs: only a movies catalog remains
     "catalogs": [
         {
             type: 'movie',
             id: 'mallu-flix',
             name: "MalluFlix Movies"
-        },
-        {
-            type: 'tv',
-            id: 'mallu-flix-news',
-            name: "Mallu Flix TV",
-            extra: [
-                {
-                    name: "search",
-                    isRequired: false
-                }
-            ]
         }
     ],
 
-    // prefix of item IDs (ie: "tt0032138" for movies, "news" for news)
-    "idPrefixes": [ "tt", "news" ],
+    // prefix of item IDs (ie: "tt0032138" for movies)
+    "idPrefixes": [ "tt" ],
 
 
  
@@ -69,8 +57,7 @@ const dataset = Object.fromEntries(
     ])
 );
 
-// Static news dataset from newsstreamdata.js
-const newsDataset = newsStreamData;
+// TV/news support removed
 
 
 // Note: dataset is now simplified to only direct MP4 URL streams
@@ -101,28 +88,6 @@ builder.defineStreamHandler(function(args) {
                 'Accept': 'video/mp4,video/*,*/*',
                 'Accept-Encoding': 'identity',
                 'Range': 'bytes=0-'
-            }
-        };
-        return Promise.resolve({ streams: [formattedStream] });
-    }
-    // Check for news streams
-    else if (newsDataset[args.id]) {
-        const stream = newsDataset[args.id];
-        //console.log('Found news stream:', stream.name);
-        const formattedStream = {
-            ...stream,
-            quality: "HD",
-            format: "hls",
-            container: "m3u8",
-            codec: "h264",
-            behaviorHints: {
-                ...stream.behaviorHints,
-                bingeGroup: "MalluFlixNews"
-            },
-            headers: {
-                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36',
-                'Accept': 'application/vnd.apple.mpegurl,application/x-mpegURL,application/octet-stream,*/*',
-                'Accept-Encoding': 'gzip, deflate, br'
             }
         };
         return Promise.resolve({ streams: [formattedStream] });
@@ -158,27 +123,6 @@ builder.defineCatalogHandler(function(args, cb) {
             .map(([key, value]) => generateMetaPreview(value, key));
         // //console.log('Movie metas count:', metas.length);
     }
-    // Handle news catalog
-    else if (args.type === 'tv') {
-        metas = Object.entries(newsDataset)
-            .filter(([_, value]) => value.type === args.type)
-            .map(([key, value]) => {
-                return {
-                    id: key,
-                    type: value.type,
-                    name: value.name || value.title || "Live News Stream",
-                    title: value.title || value.name || "Live News Stream",
-                    poster: value.poster,
-                    background: value.background,
-                    logo: value.poster,
-                    description: `Live streaming from ${value.name || 'News Channel'}`,
-                    genres: ["News", "Live"],
-                    year: new Date().getFullYear()
-                };
-            });
-        //console.log('News metas count:', metas.length);
-        //console.log('Sample news meta:', metas[0]);
-    }
 
     return Promise.resolve({ metas: metas })
 })
@@ -187,7 +131,7 @@ builder.defineCatalogHandler(function(args, cb) {
 builder.defineMetaHandler(function(args) {
     //console.log('Meta request for:', args.id);
     //console.log('Available movie IDs:', Object.keys(dataset));
-    //console.log('Available news IDs:', Object.keys(newsDataset));
+    // TV/news support removed
     
     // Handle movie metadata
     if (dataset[args.id]) {
@@ -211,30 +155,6 @@ builder.defineMetaHandler(function(args) {
         };
         
         //console.log('Returning movie meta:', meta);
-        return Promise.resolve({ meta: meta });
-    }
-    
-    // Handle news metadata
-    if (newsDataset[args.id]) {
-        const stream = newsDataset[args.id];
-        
-        const meta = {
-            id: args.id,
-            type: stream.type,
-            name: stream.name || stream.title || "Live News Stream",
-            title: stream.title || stream.name || "Live News Stream",
-            poster: stream.poster,
-            background: stream.background,
-            logo: stream.poster,
-            description: `Live streaming from ${stream.name || 'News Channel'}`,
-            genres: ["News", "Live"],
-            year: new Date().getFullYear(),
-            runtime: "Live",
-            country: "India",
-            language: "Malayalam"
-        };
-        
-        //console.log('Returning news meta:', meta);
         return Promise.resolve({ meta: meta });
     }
     
