@@ -37,7 +37,7 @@ const manifest = {
 
 };
 
-// Build dataset using only IMDb ID and direct HLS (m3u8) URL from streamsData
+// Build dataset using only IMDb ID and direct MP4 URL from streamsData
 const dataset = Object.fromEntries(
     Object.entries(streamsData).map(([imdbId, streamUrl]) => [
         imdbId,
@@ -47,8 +47,8 @@ const dataset = Object.fromEntries(
             url: streamUrl,
             title: "Mallu Flix Streaming Server",
             quality: "HD",
-            format: "hls",
-            container: "m3u8",
+            format: "mp4",
+            container: "mp4",
             codec: "h264",
             behaviorHints: {
                 bingeGroup: "MalluFlix"
@@ -76,8 +76,8 @@ builder.defineStreamHandler(function(args) {
         const formattedStream = {
             ...stream,
             quality: "HD",
-            format: "hls",
-            container: "m3u8",
+            format: "mp4",
+            container: "mp4",
             codec: "h264",
             behaviorHints: {
                 ...stream.behaviorHints,
@@ -85,7 +85,7 @@ builder.defineStreamHandler(function(args) {
             },
             headers: {
                 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36',
-                'Accept': 'application/vnd.apple.mpegurl,application/x-mpegURL,application/octet-stream,*/*',
+                'Accept': 'video/mp4,application/octet-stream,*/*',
                 'Accept-Encoding': 'gzip, deflate, br'
             }
         };
