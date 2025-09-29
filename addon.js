@@ -37,7 +37,7 @@ const manifest = {
 
 };
 
-// Build dataset using only IMDb ID and direct MP4 URL from streamsData
+// Build dataset using only IMDb ID and direct URL from streamsData (.mp4 or .m3u8)
 const dataset = Object.fromEntries(
     Object.entries(streamsData).map(([imdbId, streamUrl]) => [
         imdbId,
@@ -47,9 +47,6 @@ const dataset = Object.fromEntries(
             url: streamUrl,
             title: "Mallu Flix Streaming Server",
             quality: "HD",
-            format: "mp4",
-            container: "mp4",
-            codec: "h264",
             behaviorHints: {
                 bingeGroup: "MalluFlix"
             }
@@ -72,21 +69,46 @@ builder.defineStreamHandler(function(args) {
     if (dataset[args.id]) {
         const stream = dataset[args.id];
         //console.log('Found movie stream:', stream.name);
+        // Infer format/headers based on URL extension (.mp4 or .m3u8)
+        const url = stream.url || '';
+        const isM3U8 = /\.m3u8(\?|$)/i.test(url);
+        const isMP4 = /\.mp4(\?|$)/i.test(url);
+
+        const inferred = isM3U8
+            ? {
+                format: "hls",
+                container: "m3u8",
+                // codec intentionally omitted; players negotiate for HLS
+                headers: {
+                    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36',
+                    'Accept': 'application/vnd.apple.mpegurl,application/x-mpegURL,*/*',
+                    'Accept-Encoding': 'gzip, deflate, br'
+                }
+            }
+            : {
+                // default to MP4 if extension is unknown
+                format: "mp4",
+                container: "mp4",
+                codec: "h264",
+                headers: {
+                    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36',
+                    'Accept': 'video/mp4,application/octet-stream,*/*',
+                    'Accept-Encoding': 'gzip, deflate, br'
+                }
+            };
+
         // Ensure quality is properly set for Stremio display with proper format info
         const formattedStream = {
             ...stream,
             quality: "HD",
-            format: "mp4",
-            container: "mp4",
-            codec: "h264",
+            ...(isMP4 || isM3U8 ? inferred : inferred),
             behaviorHints: {
                 ...stream.behaviorHints,
                 bingeGroup: "MalluFlix"
             },
             headers: {
-                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36',
-                'Accept': 'video/mp4,application/octet-stream,*/*',
-                'Accept-Encoding': 'gzip, deflate, br'
+                ...(stream.headers || {}),
+                ...inferred.headers
             }
         };
         return Promise.resolve({ streams: [formattedStream] });
