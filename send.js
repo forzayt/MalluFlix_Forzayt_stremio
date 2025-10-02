@@ -9,8 +9,8 @@ const METAHUB_URL = "https://images.metahub.space";
 // ================================
 // Movie Configuration
 // ================================
-const IMDB_ID = "tt30818546";  // Your movie's IMDB ID
-const STREAM_URL = "https://rumble.com/hls-vod/6xffke/playlist.m3u8";  // Stream URL
+const IMDB_ID = "tt22001978";  // Your movie's IMDB ID
+const STREAM_URL = "https://rumble.com/hls-vod/6xkitq/playlist.m3u8";  // Stream URL
 
 // ================================
 // Fetch Movie Details from OMDB
