@@ -82,7 +82,7 @@ async function sendDiscordWebhook(imdbId, streamUrl) {
         };
 
         const payload = {
-            content: `@here **${movie.title}** added to MalluFlix! 🍿`,
+            content: `@here @everyone **${movie.title}** added to MalluFlix! 🍿`,
             embeds: [embed]
         };
 
