@@ -37,6 +37,11 @@ module.exports = {
 
 
 
+     "tt29383379": "https://rumble.com/hls-vod/6xkmkq/playlist.m3u8",
+     
+
+
+
 
 
 };
