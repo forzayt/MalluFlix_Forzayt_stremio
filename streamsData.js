@@ -11,6 +11,12 @@ module.exports = {
 
 
 
+     "tt35613198": "https://rumble.com/hls-vod/6xoe2y/playlist.m3u8",
+     
+
+
+
+
      "tt30818546": "https://rumble.com/hls-vod/6xffke/playlist.m3u8",
      
 
