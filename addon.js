@@ -22,7 +22,7 @@ const manifest = {
     version: "1.2.0",
 
     name: "MalluFlix",
-    description: "Stream your fav movies and live TV directly in Stremio without buffering",
+    description: "Stream your fav movies and live TV directly in Stremio without buffering , Frequent updates are released so just uninstall and reinstall the addon to get the latest features <3 .",
     logo: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSBciJKrh7BJiY6U1UKbCedjqBdd9_AQai7-Q&s",
     background: "https://avatars.githubusercontent.com/u/127679210?v=4",
 
