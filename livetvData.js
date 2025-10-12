@@ -11,6 +11,15 @@ const liveTvChannels = [
         group: "News",
         category: "News"
     },
+    {
+        id: "asianet",
+        name: "Asianet",
+        title: "Asianet",
+        url: "http://217.20.112.199/asianet/index.m3u8",
+        logo: "https://yt3.googleusercontent.com/rD84Z2RyqjpzQ7xYvOl4Rcn_MnAny8VvcF5a0Iz76A0EnYTRHVYU-SLIIxR_a9dv_95QNCl76WY=s900-c-k-c0x00ffffff-no-rj",
+        group: "News",
+        category: "News"
+    },
 ];
 
 module.exports = liveTvChannels;
