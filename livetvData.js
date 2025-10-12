@@ -37,6 +37,18 @@ const liveTvChannels = [
         group: "News",
         category: "News"
     },
+
+
+
+    {
+        id: "travel",
+        name: "Travel 4k",
+        title: "Travel 4k",
+        url: "https://streams2.sofast.tv/sofastplayout/33c31ac4-51fa-46ae-afd0-0d1fe5e60a80_0_HLS/bitrate2.m3u8",
+        logo: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQz7m8lIJ1q-5N63Y83Omhcrxq-PTxx4mSRlg&s",
+        group: "News",
+        category: "News"
+    },
 ];
 
 module.exports = liveTvChannels;
