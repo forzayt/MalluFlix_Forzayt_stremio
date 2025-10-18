@@ -25,7 +25,7 @@ const manifest = {
         {
             type: "tv",
             id: "live-tv-catalog",
-            name: "Live TV Channels"
+            name: "MalluFlix TV Channels"
         }
     ],
 

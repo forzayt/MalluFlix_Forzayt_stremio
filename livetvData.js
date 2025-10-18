@@ -41,6 +41,17 @@ const liveTvChannels = [
 
 
     {
+        id: "ULTIMATE BODY TAPE | Watch Party | Best of Miami Swim Week",
+        name: "ULTIMATE BODY TAPE | Watch Party | Best of Miami Swim Week",
+        title: "ULTIMATE BODY TAPE | Watch Party | Best of Miami Swim Week",
+        url: "https://hugh.cdn.rumble.cloud/live/t5qc33px/slot-136/w7m3-n0o0/chunklist.m3u8",
+        logo: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQz7m8lIJ1q-5N63Y83Omhcrxq-PTxx4mSRlg&s",
+        group: "News",
+        category: "News"
+    },
+
+
+    {
         id: "travel",
         name: "Travel 4k",
         title: "Travel 4k",
