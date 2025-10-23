@@ -2,6 +2,7 @@
 const { addonBuilder } = require("stremio-addon-sdk");
 const streamsData = require("./streamsData");
 const liveTvChannels = require("./livetvData");
+const seriesData = require("./seriesData");
 
 
 const manifest = { 
@@ -14,7 +15,7 @@ const manifest = {
     background: "https://avatars.githubusercontent.com/u/127679210?v=4",
 
     resources: ["catalog", "stream", "meta"],
-    types: ["movie", "tv"],
+    types: ["movie", "tv", "series"],
 
     catalogs: [
         {
@@ -26,10 +27,15 @@ const manifest = {
             type: "tv",
             id: "live-tv-catalog",
             name: "MalluFlix TV Channels"
+        },
+        {
+            type: "series",
+            id: "series-catalog",
+            name: "MalluFlix Series"
         }
     ],
 
-    idPrefixes: ["tt", "live-"] // movies start with tt, live channels with live-
+    idPrefixes: ["tt", "live-", "series-"] // movies start with tt, live channels with live-, series with series-
 };
 
 // ------------------- Movie Dataset -------------------
@@ -66,6 +72,24 @@ const liveTvDataset = Object.fromEntries(
 );
 
 console.log(`Loaded ${Object.keys(liveTvDataset).length} static live TV channels`);
+
+// ------------------- Series Dataset -------------------
+// Load series data from seriesData.js
+const seriesDataset = Object.fromEntries(
+    seriesData.map((series) => {
+        const stremioId = series.id.startsWith("series-") ? series.id : `series-${series.id}`;
+        return [stremioId, {
+            name: series.name || series.title || "Unknown Series",
+            type: "series",
+            streams: series.streams || [],
+            title: series.title || series.name || "Unknown Series",
+            poster: series.poster || null,
+            behaviorHints: { bingeGroup: "Series" }
+        }];
+    })
+);
+
+console.log(`Loaded ${Object.keys(seriesDataset).length} series`);
 
 // ------------------- Addon Builder -------------------
 const builder = new addonBuilder(manifest);
@@ -123,11 +147,38 @@ builder.defineStreamHandler(args => {
         });
     }
 
+    // Series stream
+    if (seriesDataset[args.id]) {
+        const series = seriesDataset[args.id];
+        const seriesStreams = series.streams.map(stream => {
+            const isM3U8 = /\.m3u8(\?|$)/i.test(stream.url || "");
+            return {
+                name: series.name,
+                title: stream.title,
+                url: stream.url,
+                format: isM3U8 ? "hls" : "mp4",
+                container: isM3U8 ? "m3u8" : "mp4",
+                codec: isM3U8 ? undefined : "h264",
+                behaviorHints: {
+                    ...series.behaviorHints,
+                    bingeGroup: "Series",
+                    notWebReady: false
+                },
+                headers: {
+                    "User-Agent": "Mozilla/5.0",
+                    "Accept": "*/*"
+                }
+            };
+        });
+
+        return Promise.resolve({ streams: seriesStreams });
+    }
+
     // nothing found
     return { streams: [] };
 });
 
-// Catalog preview generator (works for movies and tv)
+// Catalog preview generator (works for movies, tv, and series)
 const generateMetaPreview = (value, key) => {
     if (value.type === "movie") {
         const imdbId = (key || "").split(":")[0];
@@ -143,6 +194,13 @@ const generateMetaPreview = (value, key) => {
             type: "tv",
             name: value.name,
             poster: value.logo || "https://via.placeholder.com/300x450/4a5568/ffffff?text=Live+TV"
+        };
+    } else if (value.type === "series") {
+        return {
+            id: key,
+            type: "series",
+            name: value.name,
+            poster: value.poster || "https://via.placeholder.com/300x450/4a5568/ffffff?text=Series"
         };
     }
     return null;
@@ -160,6 +218,10 @@ builder.defineCatalogHandler(args => {
             .filter(Boolean);
     } else if (args.type === "tv" && args.id === "live-tv-catalog") {
         metas = Object.entries(liveTvDataset)
+            .map(([k, v]) => generateMetaPreview(v, k))
+            .filter(Boolean);
+    } else if (args.type === "series" && args.id === "series-catalog") {
+        metas = Object.entries(seriesDataset)
             .map(([k, v]) => generateMetaPreview(v, k))
             .filter(Boolean);
     }
@@ -188,6 +250,27 @@ builder.defineMetaHandler(args => {
                 runtime: "120 min",
                 country: "India",
                 language: "Malayalam"
+            }
+        });
+    }
+
+    // Series meta
+    if (seriesDataset[args.id]) {
+        const series = seriesDataset[args.id];
+        return Promise.resolve({
+            meta: {
+                id: args.id,
+                type: "series",
+                name: series.name,
+                title: series.title,
+                poster: series.poster,
+                description: `Watch ${series.name} series`,
+                genres: ["Animation", "Series"],
+                videos: series.streams.map((stream, index) => ({
+                    id: `${args.id}:${index}`,
+                    title: stream.title,
+                    released: new Date().toISOString()
+                }))
             }
         });
     }
