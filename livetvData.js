@@ -6,22 +6,24 @@ const liveTvChannels = [
 
     {
         id: "tomandjerrytales",
-        name: "Tom and Jerry Tales | Season 1",
+        type: "series",
+        name: "Tom and Jerry Tales",
         title: "Tom and Jerry Tales | Season 1",
-        url: "https://rumble.com/hls-vod/6yi3bi/playlist.m3u8",
-        logo: "https://static.wikia.nocookie.net/tomandjerry/images/6/6b/Tomandjerrytales-1-.jpg",
-        group: "News",
-        category: "News"
+        poster: "https://static.wikia.nocookie.net/tomandjerry/images/6/6b/Tomandjerrytales-1-.jpg",
+        streams: [
+        {
+            title: "Season 1",
+            url: "https://rumble.com/hls-vod/6yi3bi/playlist.m3u8"
+        },
+        {
+            title: "Season 2",
+            url: "https://rumble.com/hls-vod/6yi3u8/playlist.m3u8"
+        },
+        
+        // Add more episodes here
+    ]
     },
-    {
-        id: "tomandjerrytales",
-        name: "Tom and Jerry Tales | Season 2",
-        title: "Tom and Jerry Tales | Season 2",
-        url: "https://rumble.com/hls-vod/6yi3bi/playlist.m3u8",
-        logo: "https://static.wikia.nocookie.net/tomandjerry/images/6/6b/Tomandjerrytales-1-.jpg",
-        group: "News",
-        category: "News"
-    },
+   
 
 
 
