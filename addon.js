@@ -134,7 +134,7 @@ builder.defineStreamHandler(args => {
             const isM3U8 = /\.m3u8(\?|$)/i.test(url);
             return {
                 name: channel.name,
-                title: urls.length > 1 ? `${channel.title} (Source ${index + 1})` : channel.title,
+                title: urls.length > 1 ? `${channel.title} (Part ${index + 1})` : channel.title,
                 url: url.trim(),
                 format: isM3U8 ? "hls" : "mp4",
                 container: isM3U8 ? "m3u8" : "mp4",
