@@ -12,7 +12,7 @@ const liveTvChannels = [
         name: "Tom and Jerry Tales",
         title: "Tom and Jerry Tales",
         url: "https://rumble.com/hls-vod/6yi3bi/playlist.m3u8,https://rumble.com/hls-vod/6yi3u8/playlist.m3u8",
-        logo: "https://static.wikia.nocookie.net/tomandjerry/images/6/6b/Tomandjerrytales-1-.jpg",
+        logo: "https://m.media-amazon.com/images/M/MV5BNTFlOGJmMDUtNWU2Yy00Njc0LWEyMjgtMWMxYTU5MzhiMTdjXkEyXkFqcGc@._V1_FMjpg_UX1000_.jpg",
         group: "News",
         category: "News"
     },
