@@ -8,6 +8,22 @@ const liveTvChannels = [
 
 
     {
+        id: "tomandjerrytales",
+        name: "Tom and Jerry Tales",
+        title: "Tom and Jerry Tales",
+        url: "https://rumble.com/hls-vod/6yi3bi/playlist.m3u8,https://rumble.com/hls-vod/6yi3u8/playlist.m3u8",
+        logo: "https://yt3.googleusercontent.com/8eItmjbOfJwot8wd0-19KgtvF2ztf4np2qIVfJ1kMPv1ADi6wx9giU62B1j6xO0Ug2Idrqbncg=s900-c-k-c0x00ffffff-no-rj",
+        group: "News",
+        category: "News"
+    },
+
+
+
+    
+
+
+
+    {
         id: "live-asianet-news",
         name: "Asianet News",
         title: "Asianet News",

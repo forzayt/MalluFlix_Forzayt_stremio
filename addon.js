@@ -127,13 +127,17 @@ builder.defineStreamHandler(args => {
     // Live TV stream
     if (liveTvDataset[args.id]) {
         const channel = liveTvDataset[args.id];
-        return Promise.resolve({
-            streams: [{
+        const urls = (channel.url || "").split(",").filter(url => url.trim() !== "");
+        
+        // Create a stream for each URL
+        const streams = urls.map((url, index) => {
+            const isM3U8 = /\.m3u8(\?|$)/i.test(url);
+            return {
                 name: channel.name,
-                title: channel.title,
-                url: channel.url || "",
-                format: /\.m3u8(\?|$)/i.test(channel.url || "") ? "hls" : "mp4",
-                container: /\.m3u8(\?|$)/i.test(channel.url || "") ? "m3u8" : "mp4",
+                title: urls.length > 1 ? `${channel.title} (Source ${index + 1})` : channel.title,
+                url: url.trim(),
+                format: isM3U8 ? "hls" : "mp4",
+                container: isM3U8 ? "m3u8" : "mp4",
                 behaviorHints: {
                     ...channel.behaviorHints,
                     bingeGroup: "LiveTV",
@@ -143,8 +147,10 @@ builder.defineStreamHandler(args => {
                     "User-Agent": "Mozilla/5.0",
                     "Accept": "*/*"
                 }
-            }]
+            };
         });
+
+        return Promise.resolve({ streams });
     }
 
     // Series stream
