@@ -2,6 +2,22 @@
 // This replaces the API fetching with static channel data
 
 const liveTvChannels = [
+
+
+    {
+        id: "tomandjerrytalesseason1",
+        name: "Tom and Jerry Tales | Season 1",
+        title: "Tom and Jerry Tales | Season 1",
+        url: "https://rumble.com/hls-vod/6yi3bi/playlist.m3u8",
+        logo: "https://static.wikia.nocookie.net/tomandjerry/images/6/6b/Tomandjerrytales-1-.jpg",
+        group: "News",
+        category: "News"
+    },
+
+
+
+
+
     {
         id: "live-asianet-news",
         name: "Asianet News",
@@ -60,6 +76,9 @@ const liveTvChannels = [
         group: "News",
         category: "News"
     },
+
+
+    
 ];
 
 module.exports = liveTvChannels;
