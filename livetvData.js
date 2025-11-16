@@ -5,24 +5,6 @@ const liveTvChannels = [
 
 
 
-
-
-    {
-        id: "tomandjerrytales",
-        name: "Tom and Jerry Tales",
-        title: "Tom and Jerry Tales",
-        url: "https://rumble.com/hls-vod/6yi3bi/playlist.m3u8,https://rumble.com/hls-vod/6yi3u8/playlist.m3u8",
-        logo: "https://m.media-amazon.com/images/M/MV5BNTFlOGJmMDUtNWU2Yy00Njc0LWEyMjgtMWMxYTU5MzhiMTdjXkEyXkFqcGc@._V1_FMjpg_UX1000_.jpg",
-        group: "News",
-        category: "News"
-    },
-
-
-
-    
-
-
-
     {
         id: "live-asianet-news",
         name: "Asianet News",
@@ -36,15 +18,15 @@ const liveTvChannels = [
 
 
     
-    // {
-    //     id: "asianet",
-    //     name: "Asianet",
-    //     title: "Asianet",
-    //     url: "http://217.20.112.199/asianet/index.m3u8",
-    //     logo: "https://yt3.googleusercontent.com/rD84Z2RyqjpzQ7xYvOl4Rcn_MnAny8VvcF5a0Iz76A0EnYTRHVYU-SLIIxR_a9dv_95QNCl76WY=s900-c-k-c0x00ffffff-no-rj",
-    //     group: "News",
-    //     category: "News"
-    // },
+    {
+        id: "asianet",
+        name: "Asianet",
+        title: "Asianet",
+        url: "http://217.20.112.199/asianet/index.m3u8",
+        logo: "https://yt3.googleusercontent.com/rD84Z2RyqjpzQ7xYvOl4Rcn_MnAny8VvcF5a0Iz76A0EnYTRHVYU-SLIIxR_a9dv_95QNCl76WY=s900-c-k-c0x00ffffff-no-rj",
+        group: "News",
+        category: "News"
+    },
 
 
 
@@ -62,17 +44,6 @@ const liveTvChannels = [
 
 
     {
-        id: "ULTIMATE BODY TAPE | Watch Party | Best of Miami Swim Week",
-        name: "ULTIMATE BODY TAPE | Watch Party | Best of Miami Swim Week",
-        title: "ULTIMATE BODY TAPE | Watch Party | Best of Miami Swim Week",
-        url: "https://rumble.com/hls-vod/6xc2gg/playlist.m3u8",
-        logo: "https://hugh.cdn.rumble.cloud/video/z8/m/m/-/v/mm-va.baa-SPLASHME-s8jgyf.jpeg",
-        group: "News",
-        category: "News"
-    },
-
-
-    {
         id: "travel",
         name: "Travel 4k",
         title: "Travel 4k",
@@ -81,6 +52,62 @@ const liveTvChannels = [
         group: "News",
         category: "News"
     },
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//  Below are some of the channels that are  just here for reference.
+
+
+
+    // {
+    //     id: "tomandjerrytales",
+    //     name: "Tom and Jerry Tales",
+    //     title: "Tom and Jerry Tales",
+    //     url: "https://rumble.com/hls-vod/6yi3bi/playlist.m3u8,https://rumble.com/hls-vod/6yi3u8/playlist.m3u8",
+    //     logo: "https://m.media-amazon.com/images/M/MV5BNTFlOGJmMDUtNWU2Yy00Njc0LWEyMjgtMWMxYTU5MzhiMTdjXkEyXkFqcGc@._V1_FMjpg_UX1000_.jpg",
+    //     group: "News",
+    //     category: "News"
+    // },
+
+
+
+    
+
+
+    // {
+    //     id: "ULTIMATE BODY TAPE | Watch Party | Best of Miami Swim Week",
+    //     name: "ULTIMATE BODY TAPE | Watch Party | Best of Miami Swim Week",
+    //     title: "ULTIMATE BODY TAPE | Watch Party | Best of Miami Swim Week",
+    //     url: "https://rumble.com/hls-vod/6xc2gg/playlist.m3u8",
+    //     logo: "https://hugh.cdn.rumble.cloud/video/z8/m/m/-/v/mm-va.baa-SPLASHME-s8jgyf.jpeg",
+    //     group: "News",
+    //     category: "News"
+    // },
+
+
+
+
+
+
+
+
 
 
     
