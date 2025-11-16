@@ -117,7 +117,8 @@ const generateMetaPreview = (value, key) => {
             id: key,
             type: "tv",
             name: value.name,
-            poster: value.logo || "https://via.placeholder.com/300x450/4a5568/ffffff?text=Live+TV"
+            poster: value.logo || "https://via.placeholder.com/1080x1920/4a5568/ffffff?text=Live+TV",
+            posterShape: "square"
         };
     }
     return null;
@@ -149,6 +150,7 @@ builder.defineMetaHandler(args => {
                 name: channel.name,
                 title: channel.title,
                 poster: channel.logo,
+                posterShape: "square",
                 background: channel.logo,
                 logo: channel.logo,
                 description: `${channel.group || "Live TV"} - ${channel.name}`,
