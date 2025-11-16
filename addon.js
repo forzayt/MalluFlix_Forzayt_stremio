@@ -2,6 +2,10 @@
 const { addonBuilder } = require("stremio-addon-sdk");
 
 const liveTvChannels = require("./livetvData");
+const { parseM3UDirectory } = require("./m3uParser");
+const path = require("path");
+
+const M3U_PLAYLIST_DIR = path.join(__dirname, "m3u");
 
 
 const manifest = { 
@@ -47,6 +51,26 @@ const liveTvDataset = Object.fromEntries(
 );
 
 console.log(`Loaded ${Object.keys(liveTvDataset).length} static live TV channels`);
+
+// ------------------- Load M3U Playlist -------------------
+try {
+    const m3uChannels = parseM3UDirectory(M3U_PLAYLIST_DIR);
+    m3uChannels.forEach(channel => {
+        const stremioId = channel.id.startsWith("live-") ? channel.id : `live-${channel.id}`;
+        liveTvDataset[stremioId] = {
+            name: channel.name || channel.title || "Unknown Channel",
+            type: "tv",
+            url: channel.url || "",
+            title: channel.title || channel.name || "Unknown Channel",
+            logo: channel.logo || null,
+            group: channel.group || channel.category || "M3U Playlist",
+            behaviorHints: { bingeGroup: "LiveTV" }
+        };
+    });
+    console.log(`Loaded ${m3uChannels.length} channels from M3U playlists`);
+} catch (error) {
+    console.error(`Error loading M3U playlists: ${error.message}`);
+}
 
 // ------------------- Addon Builder -------------------
 const builder = new addonBuilder(manifest);
