@@ -1,14 +1,16 @@
 // index.js (or your addon entry)
 const { addonBuilder } = require("stremio-addon-sdk");
+const axios = require("axios");
 
 const liveTvChannels = require("./livetvData");
+const movies = require("./movieData");
 const { parseM3UDirectory } = require("./m3uParser");
 const path = require("path");
 
 const M3U_PLAYLIST_DIR = path.join(__dirname, "m3u");
 
 
-const manifest = { 
+const manifest = {
     id: "org.mallu.flix.forza",
     version: "1.2.0",
 
@@ -18,19 +20,24 @@ const manifest = {
     background: "https://avatars.githubusercontent.com/u/127679210?v=4",
 
     resources: ["catalog", "stream", "meta"],
-    types: ["tv"],
+    types: ["tv", "movie"],
 
     catalogs: [
-        
+
         {
             type: "tv",
             id: "live-tv-catalog",
             name: "MalluFlix TV Channels"
         },
-        
+        {
+            type: "movie",
+            id: "movie-catalog",
+            name: "MalluFlix Movies"
+        }
+
     ],
 
-    idPrefixes: ["live-"]
+    idPrefixes: ["live-", "tt"]
 };
 
 // ------------------- Live TV Dataset -------------------
@@ -51,6 +58,30 @@ const liveTvDataset = Object.fromEntries(
 );
 
 console.log(`Loaded ${Object.keys(liveTvDataset).length} static live TV channels`);
+
+// ------------------- Movie Data -------------------
+// Map ID -> URL for stream resolution
+const movieMap = Object.fromEntries(
+    movies.map(m => [m.id, m.url])
+);
+
+// Helper to fetch metadata from Cinemeta
+const getMovieMeta = async (imdbId) => {
+    try {
+        const { data } = await axios.get(`https://v3-cinemeta.strem.io/meta/movie/${imdbId}.json`);
+        return data.meta;
+    } catch (error) {
+        console.error(`Failed to fetch meta for ${imdbId}:`, error.message);
+        return {
+            id: imdbId,
+            name: "Unknown Movie",
+            poster: "https://via.placeholder.com/300x450?text=No+Meta",
+            type: "movie"
+        };
+    }
+};
+
+// ------------------- Load M3U Playlist -------------------
 
 // ------------------- Load M3U Playlist -------------------
 try {
@@ -81,7 +112,7 @@ builder.defineStreamHandler(args => {
     if (liveTvDataset[args.id]) {
         const channel = liveTvDataset[args.id];
         const urls = (channel.url || "").split(",").filter(url => url.trim() !== "");
-        
+
         // Create a stream for each URL
         const streams = urls.map((url, index) => {
             const isM3U8 = /\.m3u8(\?|$)/i.test(url);
@@ -106,6 +137,30 @@ builder.defineStreamHandler(args => {
         return Promise.resolve({ streams });
     }
 
+    if (movieMap[args.id]) {
+        const url = movieMap[args.id];
+        // We need to fetch title for the stream name, or just use a generic one if we want to be fast.
+        // For streams, user usually knows what they clicked. Let's try to pass a reasonable title if possible.
+        // Fetching meta here might delay the stream response. Let's return the stream immediately.
+
+        const urls = (url || "").split(",").filter(u => u.trim() !== "");
+        const streams = urls.map((u, index) => {
+            const isM3U8 = /\.m3u8(\?|$)/i.test(u);
+            return {
+                name: "MalluFlix",
+                title: `MalluFlix Server`,
+                url: u.trim(),
+                format: isM3U8 ? "hls" : "mp4",
+                container: isM3U8 ? "m3u8" : "mp4",
+                behaviorHints: {
+                    bingeGroup: "Movies",
+                    notWebReady: false
+                }
+            };
+        });
+        return Promise.resolve({ streams });
+    }
+
     // nothing found
     return { streams: [] };
 });
@@ -121,11 +176,20 @@ const generateMetaPreview = (value, key) => {
             posterShape: "square"
         };
     }
+    if (value.type === "movie") {
+        return {
+            id: key,
+            type: "movie",
+            name: value.name,
+            poster: value.logo,
+            posterShape: "poster"
+        };
+    }
     return null;
 };
 
 // Catalog handler
-builder.defineCatalogHandler(args => {
+builder.defineCatalogHandler(async (args) => {
     console.log("Catalog requested:", args);
     let metas = [];
 
@@ -133,6 +197,20 @@ builder.defineCatalogHandler(args => {
         metas = Object.entries(liveTvDataset)
             .map(([k, v]) => generateMetaPreview(v, k))
             .filter(Boolean);
+    } else if (args.type === "movie" && args.id === "movie-catalog") {
+        // Fetch meta for all movies in parallel
+        const metaPromises = movies.map(async (m) => {
+            const meta = await getMovieMeta(m.id);
+            return {
+                id: meta.id,
+                type: "movie",
+                name: meta.name,
+                poster: meta.poster,
+                posterShape: "poster"
+            };
+        });
+
+        metas = (await Promise.all(metaPromises)).filter(Boolean);
     }
 
     return Promise.resolve({ metas });
@@ -159,6 +237,11 @@ builder.defineMetaHandler(args => {
                 language: "Malayalam"
             }
         });
+    }
+
+    // Movie meta
+    if (movieMap[args.id]) {
+        return getMovieMeta(args.id).then(meta => ({ meta }));
     }
 
     // fallback
