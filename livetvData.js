@@ -44,11 +44,11 @@ const liveTvChannels = [
 
 
     {
-        id: "travel",
-        name: "Travel 4k",
-        title: "Travel 4k",
-        url: "https://streams2.sofast.tv/sofastplayout/33c31ac4-51fa-46ae-afd0-0d1fe5e60a80_0_HLS/bitrate2.m3u8",
-        logo: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQz7m8lIJ1q-5N63Y83Omhcrxq-PTxx4mSRlg&s",
+        id: "Vevo Music",
+        name: "Vevo Music",
+        title: "Vevo Music",
+        url: " https://d128y56w6v2kax.cloudfront.net/playlist/amg00056-vevotv-vevopopau-samsungau/playlist.m3u8",
+        logo: "https://brand.vevo.com/wp-content/uploads/2021/03/logo-img-02.svg",
         group: "News",
         category: "News"
     },
