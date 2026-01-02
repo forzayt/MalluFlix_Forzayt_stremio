@@ -14,7 +14,10 @@ const manifest = {
             type: "movie",
             id: "malluflix_catalog",
             name: "MalluFlix Movies",
-            extra: [{ name: "search", isRequired: false }]
+            extra: [
+                { name: "search", isRequired: false },
+                { name: "skip", isRequired: false }
+            ]
         }
     ],
     idPrefixes: ["tmdb"]
@@ -37,6 +40,8 @@ builder.defineCatalogHandler(async ({ type, id, extra }) => {
             }
 
             const today = new Date().toISOString().split('T')[0];
+            const skip = extra && extra.skip ? parseInt(extra.skip) : 0;
+            const page = Math.floor(skip / 20) + 1;
 
             // Fetch Malayalam movies released up to today
             const response = await axios.get(`${TMDB_BASE_URL}/discover/movie`, {
@@ -45,7 +50,7 @@ builder.defineCatalogHandler(async ({ type, id, extra }) => {
                     with_original_language: "ml", // Malayalam
                     "primary_release_date.lte": today,
                     sort_by: "primary_release_date.desc",
-                    page: 1
+                    page: page
                 }
             });
 
