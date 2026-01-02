@@ -1,62 +1,81 @@
 <!DOCTYPE html>
-<html>
+<html lang="en-US" class="scroll-smooth">
 
 <head>
-    <title>MalluFlix</title>
-    <link rel="icon" id="icon" href="https://forzayt.github.io/assets/emoji.png" />
-    <style>
-        body {
-            background: #111;
-            color: white;
-            font-family: sans-serif;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            height: 100vh;
-            margin: 0;
-        }
+  <title>MalluFlix</title>
+  <link rel="icon" id="icon" href="https://forzayt.github.io/assets/emoji.png" />
+  <link rel="stylesheet" type="text/css" href="css/app.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap"
+    rel="stylesheet" />
+  <link href="    https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700;800;900&display=swap"
+    rel="stylesheet" />
 
-        a {
-            color: #f39c12;
-            text-decoration: none;
-            font-size: 2em;
-            border: 2px solid #f39c12;
-            padding: 10px 20px;
-            border-radius: 5px;
-            transition: all 0.3s;
-        }
+  <!-- buy me a coffee script starts here  -->
 
-        a:hover {
-            background: #f39c12;
-            color: #111;
-        }
+  <script data-name="BMC-Widget" data-cfasync="false" src="https://cdnjs.buymeacoffee.com/1.0.0/widget.prod.min.js"
+    data-id="vishnus" data-description="Support me on Buy me a coffee!"
+    data-message="Thank you for visiting! You can buy me a cat here.😻" data-color="#0077B7" data-position="left"
+    data-x_margin="18" data-y_margin="18">
+    </script>
 
-        h1 {
-            margin-bottom: 20px;
-        }
+  <!-- buy me a coffee script ends here  -->
 
-        .link-text {
-            margin-top: 10px;
-            color: #aaa;
-        }
-    </style>
+
+
 </head>
 
-<body>
-    <h1>MalluFlix Addon</h1>
-    <p>Stremio addon for Malayalam movie catalogs.</p>
-    <a id="installLink" href="#">Install on Stremio</a>
-    <p class="link-text"><small>Or copy this link: <span id="manifestLink">Loading...</span></small></p>
+<body class="bg-white">
 
-    <script>
-        // Dynamically generate the manifest URL based on the current location
-        const manifestUrl = window.location.protocol + "//" + window.location.host + "/manifest.json";
-        const installUrl = "stremio://" + window.location.host + "/manifest.json";
+  <section class="relative w-full h-screen overflow-hidden bg-center bg-no-repeat bg-cover bg-patternTop">
+    <div class="container relative w-full px-8 pt-32 pb-24 mx-auto lg:px-4">
+      <div class="flex flex-col w-full mb-12 text-left lg:text-center">
+        <strong class="mb-4 text-xs font-semibold tracking-widest uppercase text-slate-500"> hand-picked by your
+          നാട്ടിലെ chettan </strong>
+        <h1 class="mb-6 font-serif font-bold tracking-tighter text-black">
+          <span class="block text-3xl sm:text-4xl md:text-5xl lg:text-6xl">
+            MalluFlix;
+          </span>
 
-        document.getElementById("installLink").href = installUrl;
-        document.getElementById("manifestLink").innerText = manifestUrl;
-    </script>
+          <span class="block mt-3 text-xl font-medium tracking-wide text-slate-600 sm:text-2xl md:text-3xl">
+            The addon for Malayalam movies catalogz
+          </span>
+
+        </h1>
+
+        <p class="mx-auto text-lg leading-snug text-slate-500 lg:w-1/2">
+          Powered by cutting-edge technology, outdated torrents, and your neighbour’s Wi-Fi. <3 </p>
+      </div>
+      <div class="flex flex-row items-center justify-center w-full mt-6 gap-4 max-w-7xl">
+        <div class="rounded-lg">
+          <a id="installLink" href="#"
+            class="inline-flex items-center px-8 py-3 text-lg text-white transition-all duration-500 ease-in-out transform bg-black border-2 border-black rounded-lg hover:border-white hover:bg-slate-500 focus:ring-2 ring-offset-current ring-offset-2">
+            Install Addon
+          </a>
+        </div>
+        <div class="rounded-lg">
+          <a href="https://github.com/forzayt/MalluFlix_Forzayt_stremio" target="_blank"
+            class="inline-flex items-center px-8 py-3 text-lg text-white transition-all duration-500 ease-in-out transform bg-black border-2 border-black rounded-lg hover:border-white hover:bg-slate-500 focus:ring-2 ring-offset-current ring-offset-2">
+            Contribute
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+
+
+
+
+
+
+
+  <script>
+    const installUrl = "stremio://" + window.location.host + "/manifest.json";
+    document.getElementById("installLink").href = installUrl;
+  </script>
+  <script src="js/app.js"></script>
+  <script src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.x.x/dist/alpine.min.js" defer></script>
 </body>
 
 </html>
