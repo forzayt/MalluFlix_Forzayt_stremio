@@ -42,11 +42,11 @@ builder.defineCatalogHandler(async ({ type, id, extra }) => {
     if (type !== "movie" || id !== "malluflix_catalog") return { metas: [] };
 
     const skip = extra?.skip ? parseInt(extra.skip) : 0;
-    const page = Math.floor(skip / 20) + 1;
+    const page = Math.round(skip / 20) + 1;
     const today = new Date().toISOString().split('T')[0];
 
-    // Fetch 2 pages concurrently to populate list faster and handle filtering gaps
-    const promises = [page, page + 1].map(p =>
+    // Fetch 3 pages to ensure sufficient content
+    const promises = [page, page + 1, page + 2].map(p =>
         axios.get("https://api.themoviedb.org/3/discover/movie", {
             params: {
                 api_key: TMDB_KEY,
@@ -61,21 +61,27 @@ builder.defineCatalogHandler(async ({ type, id, extra }) => {
     const responses = await Promise.all(promises);
     const results = responses.flatMap(r => r.data.results || []);
 
-    // Process all items in parallel
-    const metaPromises = results.map(async (m) => {
-        const imdb = await tmdbToImdb(m.id);
-        if (!imdb) return null;
+    // Process items in chunks to avoid hitting API rate limits (429)
+    const batchSize = 5;
+    const validMetas = [];
 
-        return {
-            id: imdb,
-            type: "movie",
-            name: m.title,
-            poster: m.poster_path ? `https://image.tmdb.org/t/p/w500${m.poster_path}` : null,
-            description: m.overview
-        };
-    });
+    for (let i = 0; i < results.length; i += batchSize) {
+        const chunk = results.slice(i, i + batchSize);
+        const chunkPromises = chunk.map(async (m) => {
+            const imdb = await tmdbToImdb(m.id);
+            if (!imdb) return null;
+            return {
+                id: imdb,
+                type: "movie",
+                name: m.title,
+                poster: m.poster_path ? `https://image.tmdb.org/t/p/w500${m.poster_path}` : null,
+                description: m.overview
+            };
+        });
 
-    const validMetas = (await Promise.all(metaPromises)).filter(m => m !== null);
+        const chunkResults = await Promise.all(chunkPromises);
+        validMetas.push(...chunkResults.filter(m => m !== null));
+    }
 
     return { metas: validMetas };
 });
