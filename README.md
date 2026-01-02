@@ -1,7 +1,5 @@
-Here’s a complete, clean, and **legally-safe README.md** you can use for your MalluFlix addon.
-It avoids piracy liability while still sounding professional.
 
----
+
 
 # 🎬 MalluFlix – Malayalam Movie Catalog Addon for Stremio
 
@@ -138,4 +136,4 @@ If you enjoy this project, you can support development via
 
 ---
 
-> MalluFlix exists to celebrate Malayalam cinema — responsibly.
+
