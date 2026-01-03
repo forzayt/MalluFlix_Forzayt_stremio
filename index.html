@@ -21,12 +21,39 @@
   <!-- buy me a coffee script ends here  -->
 
 
+  <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
+
+  <script>
+  window.addEventListener("load", () => {
+    setTimeout(() => {
+      document.getElementById("loaderScreen").classList.add("hidden");
+      document.getElementById("mainContent").classList.remove("opacity-0");
+      document.body.classList.remove("overflow-hidden");
+    }, 5000); // 5 seconds
+  });
+</script>
+
+
+
 
 </head>
 
-<body class="bg-white">
+<body class="bg-white overflow-hidden">
 
-  <section class="relative w-full h-screen overflow-hidden bg-center bg-no-repeat bg-cover bg-patternTop">
+
+  <div id="loaderScreen" class="fixed inset-0 z-50 flex items-center justify-center bg-white">
+  <lottie-player
+    src="loading.json"
+    background="transparent"
+    speed="1"
+    style="width: 620px; height: 620px;margin-top: 100px;"
+    loop
+    autoplay>
+  </lottie-player>
+</div>
+
+
+  <section id="mainContent" class="opacity-0 relative w-full h-screen overflow-hidden bg-center bg-no-repeat bg-cover bg-patternTop">
     <div class="container relative w-full px-8 pt-32 pb-24 mx-auto lg:px-4">
       <div class="flex flex-col w-full mb-12 text-left lg:text-center">
         <strong class="mb-4 text-xs font-semibold tracking-widest uppercase text-slate-500"> </strong>
