@@ -28,10 +28,11 @@ const manifest = {
 const builder = new addonBuilder(manifest);
 
 /* Convert TMDB → IMDb ID */
-async function tmdbToImdb(tmdbId) {
+async function tmdbToImdb(tmdbId, mediaType = "movie") {
     try {
+        const endpoint = mediaType === "series" ? "tv" : "movie";
         const res = await axios.get(
-            `https://api.themoviedb.org/3/movie/${tmdbId}/external_ids`,
+            `https://api.themoviedb.org/3/${endpoint}/${tmdbId}/external_ids`,
             { params: { api_key: TMDB_KEY } }
         );
         return res.data.imdb_id;
@@ -94,23 +95,85 @@ function getFallbackHost(prorcpHtml) {
 }
 
 function parseSeriesId(id) {
-    const parts = id.split(":");
-    if (parts.length >= 3) {
-        return { imdbId: parts[0], season: parseInt(parts[1], 10), episode: parseInt(parts[2], 10) };
+    const cleanId = String(id || "").trim().replace(/[`'"]/g, "");
+    const parts = cleanId.split(":");
+    if (parts.length >= 3 && /^\d+$/.test(parts[parts.length - 2]) && /^\d+$/.test(parts[parts.length - 1])) {
+        return {
+            baseId: parts.slice(0, parts.length - 2).join(":"),
+            season: parseInt(parts[parts.length - 2], 10),
+            episode: parseInt(parts[parts.length - 1], 10)
+        };
     }
-    const match = id.match(/^(tt\d+)/);
-    if (!match) return null;
-    return { imdbId: match[1], season: 1, episode: 1 };
+    return { baseId: cleanId, season: 1, episode: 1 };
 }
 
-function buildEmbedUrl(type, id) {
+function getTmdbId(baseId) {
+    const match = String(baseId || "").match(/^tmdb:(\d+)$/i);
+    return match ? match[1] : "";
+}
+
+async function resolveImdbId(type, baseId) {
+    const cleanBaseId = String(baseId || "").trim().replace(/[`'"]/g, "");
+    if (/^tt\d+$/i.test(cleanBaseId)) return cleanBaseId;
+    const tmdbId = getTmdbId(cleanBaseId);
+    if (!tmdbId) return "";
+    const mediaType = type === "series" ? "series" : "movie";
+    return (await tmdbToImdb(tmdbId, mediaType)) || "";
+}
+
+async function fetchCinemetaMeta(type, metaId) {
+    const mediaType = type === "series" ? "series" : "movie";
+    const endpoints = [
+        `https://v3-cinemeta.strem.io/meta/${mediaType}/${metaId}.json`,
+        `https://cinemeta-live.strem.io/meta/${mediaType}/${metaId}.json`
+    ];
+    for (const endpoint of endpoints) {
+        try {
+            const res = await axios.get(endpoint, { timeout: 10000 });
+            if (res.data && res.data.meta) return res.data;
+        } catch {}
+    }
+    return null;
+}
+
+async function fetchTmdbMeta(type, baseId) {
+    const tmdbId = getTmdbId(baseId);
+    if (!tmdbId) return null;
+    const mediaType = type === "series" ? "tv" : "movie";
+    try {
+        const res = await axios.get(`https://api.themoviedb.org/3/${mediaType}/${tmdbId}`, {
+            params: { api_key: TMDB_KEY },
+            timeout: 10000
+        });
+        const item = res.data || {};
+        const name = item.title || item.name || "";
+        if (!name) return null;
+        return {
+            meta: {
+                id: `tmdb:${tmdbId}`,
+                type: type === "series" ? "series" : "movie",
+                name,
+                description: item.overview || "",
+                poster: item.poster_path ? `https://image.tmdb.org/t/p/w500${item.poster_path}` : undefined,
+                background: item.backdrop_path ? `https://image.tmdb.org/t/p/original${item.backdrop_path}` : undefined,
+                releaseInfo: (item.release_date || item.first_air_date || "").slice(0, 4) || undefined
+            }
+        };
+    } catch {
+        return null;
+    }
+}
+
+async function buildEmbedUrl(type, id) {
+    const parsed = parseSeriesId(id);
+    const imdbId = await resolveImdbId(type, parsed.baseId);
+    if (!imdbId) return "";
     if (type === "movie") {
-        return `https://vsembed.ru/embed/movie/${id}`;
+        return `https://vsembed.ru/embed/movie/${imdbId}`;
     }
     if (type === "series") {
-        const parsed = parseSeriesId(id);
-        if (!parsed || !parsed.imdbId || Number.isNaN(parsed.season) || Number.isNaN(parsed.episode)) return "";
-        return `https://vsembed.ru/embed/tv/${parsed.imdbId}/${parsed.season}-${parsed.episode}`;
+        if (!parsed || Number.isNaN(parsed.season) || Number.isNaN(parsed.episode)) return "";
+        return `https://vsembed.ru/embed/tv/${imdbId}/${parsed.season}-${parsed.episode}`;
     }
     return "";
 }
@@ -228,17 +291,20 @@ builder.defineCatalogHandler(async ({ type, id, extra }) => {
 
 /* Cinemeta Metadata */
 builder.defineMetaHandler(async ({ type, id }) => {
-    if (type !== "movie") return { meta: null };
-
-    const res = await axios.get(
-        `https://v3-cinemeta.strem.io/meta/movie/${id}.json`
-    );
-    return res.data;
+    if (type !== "movie" && type !== "series") return { meta: null };
+    const parsed = parseSeriesId(id);
+    const imdbId = await resolveImdbId(type, parsed.baseId);
+    const preferredId = imdbId || parsed.baseId;
+    const cinemeta = await fetchCinemetaMeta(type, preferredId);
+    if (cinemeta) return cinemeta;
+    const tmdbMeta = await fetchTmdbMeta(type, parsed.baseId);
+    if (tmdbMeta) return tmdbMeta;
+    return { meta: null };
 });
 
 builder.defineStreamHandler(async ({ type, id }) => {
     if (type !== "movie" && type !== "series") return { streams: [] };
-    const embedUrl = buildEmbedUrl(type, id);
+    const embedUrl = await buildEmbedUrl(type, id);
     if (!embedUrl) return { streams: [] };
 
     try {
