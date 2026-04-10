@@ -1,0 +1,1 @@
+cd /d "D:\Workspace\MalluFlix_Forzayt_stremio" && start cmd /k npm start && timeout /t 5 && cloudflared tunnel --url http://127.0.0.1:7000
